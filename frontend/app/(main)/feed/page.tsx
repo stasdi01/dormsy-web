@@ -76,10 +76,18 @@ function FeedContent() {
     setLoadingMore(false);
   }
 
-  function handleSearch(e: React.FormEvent) {
+  function handleSearch(e: React.SyntheticEvent) {
     e.preventDefault();
     setSearch(searchInput.trim());
     setParam("q", searchInput.trim());
+  }
+
+  function handleSearchChange(value: string) {
+    setSearchInput(value);
+    if (value === "") {
+      setSearch("");
+      setParam("q", "");
+    }
   }
 
   const hasMore = listings.length < total;
@@ -97,7 +105,7 @@ function FeedContent() {
           type="search"
           placeholder="Search listings..."
           value={searchInput}
-          onChange={(e) => setSearchInput(e.target.value)}
+          onChange={(e) => handleSearchChange(e.target.value)}
           className="w-full pl-10 pr-4 py-2.5 bg-white border border-[#E5E7EB] rounded-xl text-sm text-[#111827] placeholder-[#9CA3AF] focus:outline-none focus:ring-2 focus:ring-[#00599B]/20 focus:border-[#00599B] transition-colors"
         />
         {searchInput && (
