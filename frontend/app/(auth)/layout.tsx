@@ -1,4 +1,4 @@
-import { Logo } from "@/components/ui/Logo";
+import { DormSyLogo } from "@/components/ui/DormSyLogo";
 
 export default function AuthLayout({
   children,
@@ -9,8 +9,8 @@ export default function AuthLayout({
     <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         {/* Logo */}
-        <div className="flex justify-center mb-8">
-          <Logo size="lg" />
+        <div className="flex justify-center mb-4">
+          <DormSyLogo size="lg" variant="full" />
         </div>
 
         {/* Card */}

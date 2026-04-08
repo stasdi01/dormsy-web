@@ -3,7 +3,7 @@
 import { Suspense, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Logo } from "@/components/ui/Logo";
+import { DormSyLogo } from "@/components/ui/DormSyLogo";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 
@@ -49,7 +49,7 @@ function ComingSoonContent() {
     <div className="min-h-screen bg-[#F9FAFB] flex flex-col items-center justify-center px-4 py-12">
       <div className="w-full max-w-md">
         <div className="flex justify-center mb-8">
-          <Logo size="lg" />
+          <DormSyLogo size="lg" variant="full" />
         </div>
 
         <div className="bg-white rounded-2xl border border-[#E5E7EB] shadow-sm p-8 text-center">

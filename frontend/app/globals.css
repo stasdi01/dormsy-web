@@ -22,10 +22,9 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Minimum touch target size */
-button,
-a,
-[role="button"] {
+/* Minimum touch target size for interactive controls */
+input[type="submit"],
+input[type="button"] {
   min-height: 44px;
 }
 
@@ -33,6 +32,10 @@ a,
 ::-webkit-scrollbar { width: 6px; height: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #D1D5DB; border-radius: 3px; }
+
+/* Hide scrollbar utility */
+.scrollbar-none { scrollbar-width: none; }
+.scrollbar-none::-webkit-scrollbar { display: none; }
 
 /* Marquee animation for college ticker */
 @keyframes marquee {
