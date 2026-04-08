@@ -26,7 +26,7 @@ VALUES ('Luther College', 'luther.edu', true);
 -- ============================================================
 CREATE TABLE waitlist (
   id            UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-  email         TEXT NOT NULL,
+  email         TEXT NOT NULL UNIQUE,
   college_name  TEXT NOT NULL,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
