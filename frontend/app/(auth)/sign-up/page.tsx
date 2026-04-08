@@ -39,7 +39,7 @@ export default function SignUpPage() {
     return Object.keys(e).length === 0;
   }
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.SyntheticEvent) {
     e.preventDefault();
     if (!validate()) return;
     setLoading(true);
@@ -67,9 +67,9 @@ export default function SignUpPage() {
         return;
       }
 
-      // 2. Create Supabase Auth user (sends verification email automatically)
+      // 2. Create Supabase Auth user
       const supabase = createClient();
-      const { error: signUpError } = await supabase.auth.signUp({
+      const { data: signUpData, error: signUpError } = await supabase.auth.signUp({
         email: form.email.toLowerCase(),
         password: form.password,
         options: {
@@ -90,7 +90,18 @@ export default function SignUpPage() {
         return;
       }
 
-      // 3. Go to verification screen
+      // 3. If email confirmation is disabled, session is returned immediately
+      if (signUpData.session) {
+        // Create profile then redirect
+        await fetch(`${apiUrl}/auth/create-profile`, {
+          method: "POST",
+          headers: { Authorization: `Bearer ${signUpData.session.access_token}` },
+        });
+        router.push("/profile-setup");
+        return;
+      }
+
+      // 4. Email confirmation enabled — go to verify screen
       router.push(`/verify-email?email=${encodeURIComponent(form.email)}`);
     } catch {
       setErrors({ email: "Something went wrong. Please try again." });

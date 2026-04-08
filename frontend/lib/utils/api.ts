@@ -3,7 +3,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 type RequestOptions = {
   method?: "GET" | "POST" | "PUT" | "PATCH" | "DELETE";
   body?: unknown;
-  token?: string;
+  token?: string | null;
   isFormData?: boolean;
 };
 
@@ -15,7 +15,7 @@ export async function apiRequest<T = unknown>(
 
   const headers: Record<string, string> = {};
 
-  if (token) {
+  if (token != null) {
     headers["Authorization"] = `Bearer ${token}`;
   }
 
@@ -43,10 +43,13 @@ export async function apiRequest<T = unknown>(
 }
 
 export async function getAuthToken(): Promise<string | null> {
-  // Client-side: get token from Supabase session
   if (typeof window === "undefined") return null;
   const { createClient } = await import("@/lib/supabase/client");
   const supabase = createClient();
-  const { data } = await supabase.auth.getSession();
-  return data.session?.access_token ?? null;
+  // getSession reads from storage; refreshSession ensures the token is valid
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session?.access_token) return session.access_token;
+  // Fall back to refreshing the session
+  const { data: refreshed } = await supabase.auth.refreshSession();
+  return refreshed.session?.access_token ?? null;
 }
