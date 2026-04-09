@@ -1,19 +1,17 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const COLLEGES = [
-  "Luther College",
+const LIVE_COLLEGES = ["Luther College"];
+
+const COMING_SOON_COLLEGES = [
   "Grinnell College",
   "Carleton College",
   "St. Olaf College",
   "Macalester College",
-  "Gustavus Adolphus",
+  "Gustavus Adolphus College",
   "Augustana College",
   "Concordia College",
   "Hamline University",
-  "Bethel University",
-  "College of St. Benedict",
-  "St. John's University",
 ];
 
 const CATEGORIES = [
@@ -83,73 +81,164 @@ export default function LandingPage() {
       </header>
 
       {/* ── Hero ── */}
-      <section className="flex-1 flex flex-col items-center justify-center text-center px-4 pt-20 pb-16">
-        <div className="inline-flex items-center gap-2 bg-[#E6F0F9] text-[#00599B] text-xs font-semibold px-3.5 py-1.5 rounded-full mb-8">
-          <span className="w-1.5 h-1.5 bg-[#1D9E75] rounded-full animate-pulse" />
-          Students only · Verified .edu emails
-        </div>
+      <section className="max-w-6xl mx-auto w-full px-4 py-20 flex flex-col lg:flex-row items-center gap-12 lg:gap-16">
+        {/* Left: text */}
+        <div className="flex-1 flex flex-col items-start text-left">
+          {/* Badges */}
+          <div className="flex flex-wrap gap-2 mb-8">
+            <div className="inline-flex items-center gap-2 bg-[#E6F0F9] text-[#00599B] text-xs font-semibold px-3.5 py-1.5 rounded-full">
+              <span className="w-1.5 h-1.5 bg-[#1D9E75] rounded-full animate-pulse" />
+              Students only · Verified .edu emails
+            </div>
+            <div className="inline-flex items-center gap-1.5 bg-[#E8F7F2] text-[#1D9E75] text-xs font-semibold px-3.5 py-1.5 rounded-full">
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              100% free — no fees, ever
+            </div>
+          </div>
 
-        <h1 className="text-5xl sm:text-6xl font-extrabold leading-tight tracking-tight max-w-3xl mb-6">
-          Buy &amp; sell within{" "}
-          <span className="text-[#00599B]">your campus</span>
-        </h1>
+          <h1 className="text-5xl sm:text-6xl font-extrabold leading-tight tracking-tight max-w-xl mb-6 text-[#111827]">
+            Buy &amp; sell within{" "}
+            <span className="text-[#00599B]">your campus</span>
+          </h1>
 
-        <p className="text-lg text-[#6B7280] max-w-xl mb-10 leading-relaxed">
-          DormSy is a marketplace for college students — verified, local, and
-          built for campus life. No strangers, no shipping, no fees.
-        </p>
+          <p className="text-lg text-[#6B7280] max-w-md mb-10 leading-relaxed">
+            DormSy is a marketplace for college students — verified, local, and
+            built for campus life. No strangers, no shipping, no fees.
+          </p>
 
-        <div className="flex flex-col sm:flex-row gap-3 items-center">
-          <Link
-            href="/sign-up"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-[#00599B] text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-[#004d87] transition-colors text-base shadow-sm"
-          >
-            Start for free
-            <svg
-              className="w-4 h-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-              strokeWidth={2.5}
+          <div className="flex flex-col sm:flex-row gap-3">
+            <Link
+              href="/sign-up"
+              className="inline-flex items-center justify-center gap-2 bg-[#00599B] text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-[#004d87] transition-colors text-base shadow-sm"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
-              />
+              Start for free
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </Link>
+            <Link
+              href="/sign-in"
+              className="inline-flex items-center justify-center gap-2 border border-[#E5E7EB] text-[#374151] font-semibold px-7 py-3.5 rounded-xl hover:border-[#00599B] hover:text-[#00599B] transition-colors text-base"
+            >
+              I already have an account
+            </Link>
+          </div>
+
+          {/* Currently live */}
+          <div className="mt-10 flex items-center gap-2 text-[#6B7280] text-sm font-medium">
+            <svg className="w-4 h-4 text-[#1D9E75]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
             </svg>
-          </Link>
-          <Link
-            href="/sign-in"
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 border border-[#E5E7EB] text-[#374151] font-semibold px-7 py-3.5 rounded-xl hover:border-[#00599B] hover:text-[#00599B] transition-colors text-base"
-          >
-            I already have an account
-          </Link>
+            Currently live at{" "}
+            {LIVE_COLLEGES.length === 1
+              ? <span className="text-[#111827] font-bold ml-1">{LIVE_COLLEGES[0]}</span>
+              : <span className="text-[#111827] font-bold ml-1">{LIVE_COLLEGES.length} colleges</span>
+            }
+          </div>
         </div>
 
-        {/* Social proof */}
-        <p className="text-xs text-[#9CA3AF] mt-8">
-          Free to use · No listing fees · No shipping required
-        </p>
+        {/* Right: image */}
+        <div className="flex-1 w-full lg:max-w-[520px]">
+          <div className="relative rounded-3xl overflow-hidden shadow-2xl aspect-[4/3]">
+            <Image
+              src="/hero-bg.png"
+              alt="Campus marketplace items"
+              fill
+              className="object-cover"
+              priority
+            />
+          </div>
+        </div>
       </section>
 
-      {/* ── College ticker ── */}
-      <div className="overflow-hidden border-y border-[#F3F4F6] py-3 bg-[#F9FAFB]">
-        <div
-          className="flex gap-8 animate-marquee whitespace-nowrap"
-          style={{ width: "max-content" }}
-        >
-          {[...COLLEGES, ...COLLEGES].map((name, i) => (
-            <span
-              key={i}
-              className="text-sm text-[#9CA3AF] font-medium flex items-center gap-2"
-            >
-              <span className="w-1 h-1 bg-[#D1D5DB] rounded-full" />
-              {name}
+      {/* ── Where we're live ── */}
+      <section className="py-20 px-4 bg-[#F9FAFB]">
+        <div className="max-w-4xl mx-auto">
+          <div className="text-center mb-12">
+            <span className="inline-block bg-[#E8F7F2] text-[#1D9E75] text-xs font-bold px-3 py-1 rounded-full mb-4 uppercase tracking-wide">
+              Availability
             </span>
-          ))}
+            <h2 className="text-3xl font-bold text-[#111827] mb-3">
+              Where DormSy is live
+            </h2>
+            <p className="text-[#6B7280] max-w-md mx-auto">
+              We&apos;re expanding campus by campus. Don&apos;t see your school
+              yet?{" "}
+              <Link
+                href="/sign-up"
+                className="text-[#00599B] font-semibold hover:underline"
+              >
+                Join the waitlist
+              </Link>{" "}
+              and we&apos;ll launch at your college next.
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+            {/* Live colleges */}
+            {LIVE_COLLEGES.map((name) => (
+              <div
+                key={name}
+                className="flex items-center gap-3 bg-white border border-[#1D9E75]/30 rounded-2xl px-4 py-3.5 shadow-sm"
+              >
+                <div className="w-8 h-8 rounded-full bg-[#E8F7F2] flex items-center justify-center flex-shrink-0">
+                  <span className="w-2.5 h-2.5 bg-[#1D9E75] rounded-full animate-pulse" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-semibold text-[#111827] truncate">
+                    {name}
+                  </p>
+                  <p className="text-xs text-[#1D9E75] font-medium">Live now</p>
+                </div>
+                <svg
+                  className="w-4 h-4 text-[#1D9E75] flex-shrink-0"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                  strokeWidth={2.5}
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                  />
+                </svg>
+              </div>
+            ))}
+
+            {/* Coming soon colleges */}
+            {COMING_SOON_COLLEGES.map((name) => (
+              <div
+                key={name}
+                className="flex items-center gap-3 bg-white border border-[#E5E7EB] rounded-2xl px-4 py-3.5 opacity-60"
+              >
+                <div className="w-8 h-8 rounded-full bg-[#F3F4F6] flex items-center justify-center flex-shrink-0">
+                  <span className="w-2.5 h-2.5 bg-[#D1D5DB] rounded-full" />
+                </div>
+                <div className="flex-1 min-w-0">
+                  <p className="text-sm font-medium text-[#374151] truncate">
+                    {name}
+                  </p>
+                  <p className="text-xs text-[#9CA3AF]">Coming soon</p>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-xs text-[#9CA3AF] mt-8">
+            More colleges launching soon.{" "}
+            <Link
+              href="/sign-up"
+              className="text-[#00599B] hover:underline font-medium"
+            >
+              Request yours →
+            </Link>
+          </p>
         </div>
-      </div>
+      </section>
 
       {/* ── Categories ── */}
       <section className="py-20 px-4 bg-white">
@@ -267,7 +356,7 @@ export default function LandingPage() {
                 />
               </svg>
             </div>
-            <h3 className="text-lg font-bold mb-2">Zero fees, always</h3>
+            <h3 className="text-lg font-bold mb-2">Zero fees</h3>
             <p className="text-sm text-[#374151] leading-relaxed">
               DormSy is completely free. No listing fees, no transaction cuts,
               no subscriptions. Keep every dollar you earn.
