@@ -65,7 +65,7 @@ export default function LandingPage() {
           </div>
           <div className="flex items-center gap-3">
             <Link
-              href="/sign-in"
+              href="/login"
               className="text-sm font-medium text-[#374151] hover:text-[#00599B] transition-colors px-3 py-2"
             >
               Sign in
@@ -119,7 +119,7 @@ export default function LandingPage() {
               </svg>
             </Link>
             <Link
-              href="/sign-in"
+              href="/login"
               className="inline-flex items-center justify-center gap-2 border border-[#E5E7EB] text-[#374151] font-semibold px-7 py-3.5 rounded-xl hover:border-[#00599B] hover:text-[#00599B] transition-colors text-base"
             >
               I already have an account
@@ -168,7 +168,7 @@ export default function LandingPage() {
               We&apos;re expanding campus by campus. Don&apos;t see your school
               yet?{" "}
               <Link
-                href="/sign-up"
+                href="/waitlist"
                 className="text-[#00599B] font-semibold hover:underline"
               >
                 Join the waitlist
@@ -231,7 +231,7 @@ export default function LandingPage() {
           <p className="text-center text-xs text-[#9CA3AF] mt-8">
             More colleges launching soon.{" "}
             <Link
-              href="/sign-up"
+              href="/waitlist"
               className="text-[#00599B] hover:underline font-medium"
             >
               Request yours →
