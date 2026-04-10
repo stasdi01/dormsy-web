@@ -144,6 +144,27 @@ router.post("/", requireAuth, async (req, res) => {
 });
 
 /**
+ * DELETE /messages/:listingId/:otherUserId
+ * Deletes all messages in a conversation for the authenticated user
+ */
+router.delete("/:listingId/:otherUserId", requireAuth, async (req, res) => {
+  const { listingId, otherUserId } = req.params;
+  const userId = req.user.id;
+
+  const { error } = await supabase
+    .from("messages")
+    .delete()
+    .eq("listing_id", listingId)
+    .or(
+      `and(sender_id.eq.${userId},receiver_id.eq.${otherUserId}),and(sender_id.eq.${otherUserId},receiver_id.eq.${userId})`
+    );
+
+  if (error) return res.status(500).json({ error: error.message });
+
+  return res.json({ success: true });
+});
+
+/**
  * GET /messages/unread-count
  * Returns total unread message count for the authenticated user
  */
