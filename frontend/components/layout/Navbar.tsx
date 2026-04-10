@@ -78,15 +78,16 @@ export function Navbar() {
             )}
           </Link>
 
-          {/* Sell button */}
+          {/* Sell button — full on sm+, icon-only on mobile */}
           <Link
             href="/listings/new"
-            className="hidden sm:flex items-center gap-1.5 bg-[#00599B] hover:bg-[#004d87] text-white text-sm font-semibold px-4 py-2 rounded-xl transition-colors"
+            className="flex items-center justify-center gap-1.5 bg-[#00599B] hover:bg-[#004d87] text-white font-semibold rounded-xl transition-colors sm:px-4 sm:py-2 sm:text-sm w-9 h-9 sm:w-auto sm:h-auto"
+            aria-label="Sell"
           >
-            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
+            <svg className="w-4 h-4 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
             </svg>
-            Sell
+            <span className="hidden sm:inline">Sell</span>
           </Link>
 
           {/* Avatar menu */}
