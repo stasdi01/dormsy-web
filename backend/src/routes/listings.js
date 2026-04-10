@@ -143,7 +143,7 @@ router.get("/:slug", async (req, res) => {
  * Creates a new listing (multipart/json — photos uploaded separately)
  */
 router.post("/", requireAuth, async (req, res) => {
-  const { title, description, price, category, condition, photo_urls } = req.body;
+  const { title, description, price, category, condition, photo_urls, is_negotiable } = req.body;
   const userId = req.user.id;
   const collegeId = req.userProfile.college_id;
   const collegeName = req.userProfile.college?.name || "college";
@@ -178,6 +178,7 @@ router.post("/", requireAuth, async (req, res) => {
       price: Number(price),
       category,
       condition,
+      is_negotiable: is_negotiable === true || is_negotiable === "true",
       status: "active",
       expires_at: expiresAt,
     })
@@ -207,7 +208,7 @@ router.post("/", requireAuth, async (req, res) => {
 router.patch("/:id", requireAuth, async (req, res) => {
   const { id } = req.params;
   const userId = req.user.id;
-  const { title, description, price, category, condition, photo_urls } = req.body;
+  const { title, description, price, category, condition, photo_urls, is_negotiable } = req.body;
 
   // Verify ownership
   const { data: existing } = await supabase
@@ -226,6 +227,7 @@ router.patch("/:id", requireAuth, async (req, res) => {
   if (price !== undefined) updates.price = Number(price);
   if (category !== undefined) updates.category = category;
   if (condition !== undefined) updates.condition = condition;
+  if (is_negotiable !== undefined) updates.is_negotiable = is_negotiable === true || is_negotiable === "true";
   updates.updated_at = new Date().toISOString();
 
   const { data: updated, error } = await supabase

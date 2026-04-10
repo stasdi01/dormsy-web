@@ -53,7 +53,7 @@ export default function SavedPage() {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {saved.map((s) =>
-            s.listing ? <ListingCard key={s.id} listing={s.listing} /> : null
+            s.listing ? <ListingCard key={s.id} listing={s.listing} initialSaved={true} /> : null
           )}
         </div>
       )}

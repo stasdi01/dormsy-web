@@ -247,7 +247,12 @@ export default function ListingDetailPage() {
           {/* Title + price */}
           <div>
             <h1 className="text-2xl font-bold text-[#111827] leading-snug">{listing.title}</h1>
-            <p className="text-3xl font-bold text-[#00599B] mt-2">{formatPrice(listing.price)}</p>
+            <div className="flex items-center gap-2 mt-2">
+              <p className="text-3xl font-bold text-[#00599B]">{formatPrice(listing.price)}</p>
+              {listing.is_negotiable && (
+                <span className="text-xs font-medium bg-[#E6F0F9] text-[#00599B] px-2 py-0.5 rounded-full">Negotiable</span>
+              )}
+            </div>
           </div>
 
           {/* Description */}

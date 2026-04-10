@@ -42,6 +42,7 @@ export type Listing = {
   category: Category;
   condition: Condition;
   status: ListingStatus;
+  is_negotiable: boolean;
   views_count: number;
   expires_at: string;
   created_at: string;

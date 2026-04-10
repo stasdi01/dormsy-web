@@ -48,6 +48,7 @@ export default function EditListingPage() {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [isNegotiable, setIsNegotiable] = useState(false);
   const [category, setCategory] = useState<Category | "">("");
   const [condition, setCondition] = useState<Condition | "">("");
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -77,6 +78,7 @@ export default function EditListingPage() {
         setPrice(l.price % 1 === 0 ? String(l.price) : l.price.toFixed(2));
         setCategory(l.category);
         setCondition(l.condition);
+        setIsNegotiable(l.is_negotiable ?? false);
 
         const existingPhotos: PhotoSlot[] = (l.listing_photos ?? [])
           .sort((a, b) => a.order_index - b.order_index)
@@ -195,6 +197,7 @@ export default function EditListingPage() {
           price: Number(price),
           category,
           condition,
+          is_negotiable: isNegotiable,
           photo_urls: photos.filter((p) => p.url).map((p) => p.url),
         },
       });
@@ -356,6 +359,27 @@ export default function EditListingPage() {
             />
           </div>
           {errors.price && <p className="text-xs text-red-500 mt-1">{errors.price}</p>}
+
+          {/* Negotiable toggle */}
+          <button
+            type="button"
+            onClick={() => setIsNegotiable((v) => !v)}
+            style={{ minHeight: 0 }}
+            className={`mt-3 flex items-center gap-2.5 px-3.5 py-2 rounded-xl border text-sm font-medium transition-colors w-fit ${
+              isNegotiable
+                ? "bg-[#E6F0F9] border-[#00599B] text-[#00599B]"
+                : "bg-white border-[#E5E7EB] text-[#6B7280] hover:border-[#00599B] hover:text-[#00599B]"
+            }`}
+          >
+            <div className={`w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${isNegotiable ? "bg-[#00599B] border-[#00599B]" : "border-[#D1D5DB]"}`}>
+              {isNegotiable && (
+                <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+              )}
+            </div>
+            Price is negotiable
+          </button>
         </div>
 
         {/* Category */}

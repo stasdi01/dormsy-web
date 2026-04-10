@@ -1,4 +1,8 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
+import { apiRequest, getAuthToken } from "@/lib/utils/api";
 import type { Listing } from "@/types";
 
 const CONDITION_LABEL: Record<string, string> = {
@@ -34,11 +38,31 @@ function formatPrice(price: number) {
 
 type Props = {
   listing: Listing;
+  initialSaved?: boolean;
 };
 
-export function ListingCard({ listing }: Props) {
+export function ListingCard({ listing, initialSaved = false }: Props) {
   const photo = listing.listing_photos
     ?.sort((a, b) => a.order_index - b.order_index)[0];
+
+  const [saved, setSaved] = useState(initialSaved);
+  const [saving, setSaving] = useState(false);
+
+  async function handleSave(e: React.MouseEvent) {
+    e.preventDefault();
+    e.stopPropagation();
+    if (saving) return;
+    setSaving(true);
+    try {
+      const token = await getAuthToken();
+      const data = await apiRequest<{ saved: boolean }>(`/saved/${listing.id}`, {
+        method: "POST",
+        token,
+      });
+      setSaved(data.saved);
+    } catch {}
+    setSaving(false);
+  }
 
   return (
     <Link
@@ -66,6 +90,23 @@ export function ListingCard({ listing }: Props) {
         <span className="absolute top-2 left-2 bg-white/90 backdrop-blur-sm text-[#374151] text-[11px] font-medium px-2 py-0.5 rounded-full border border-[#E5E7EB]">
           {CATEGORY_LABEL[listing.category] ?? listing.category}
         </span>
+
+        {/* Save / heart button */}
+        <button
+          onClick={handleSave}
+          style={{ minHeight: 0 }}
+          className="absolute top-2 right-2 w-7 h-7 flex items-center justify-center rounded-full bg-white/90 backdrop-blur-sm border border-[#E5E7EB] hover:scale-110 transition-all shadow-sm"
+          aria-label={saved ? "Unsave" : "Save"}
+        >
+          <svg
+            className={`w-3.5 h-3.5 transition-colors ${saved ? "text-red-500 fill-red-500" : "text-[#9CA3AF] fill-none"}`}
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z" />
+          </svg>
+        </button>
       </div>
 
       {/* Info */}
