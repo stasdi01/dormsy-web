@@ -3,16 +3,7 @@ import Image from "next/image";
 
 const LIVE_COLLEGES = ["Luther College"];
 
-const COMING_SOON_COLLEGES = [
-  "Grinnell College",
-  "Carleton College",
-  "St. Olaf College",
-  "Macalester College",
-  "Gustavus Adolphus College",
-  "Augustana College",
-  "Concordia College",
-  "Hamline University",
-];
+const COMING_SOON_COLLEGES = ["Barry University", "Grinnell College"];
 
 const CATEGORIES = [
   { icon: "📚", label: "Textbooks" },
@@ -91,8 +82,18 @@ export default function LandingPage() {
               Students only · Verified .edu emails
             </div>
             <div className="inline-flex items-center gap-1.5 bg-[#E8F7F2] text-[#1D9E75] text-xs font-semibold px-3.5 py-1.5 rounded-full">
-              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <svg
+                className="w-3 h-3"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+                />
               </svg>
               100% free — no fees, ever
             </div>
@@ -114,8 +115,18 @@ export default function LandingPage() {
               className="inline-flex items-center justify-center gap-2 bg-[#00599B] text-white font-semibold px-7 py-3.5 rounded-xl hover:bg-[#004d87] transition-colors text-base shadow-sm"
             >
               Start for free
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              <svg
+                className="w-4 h-4"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3"
+                />
               </svg>
             </Link>
             <Link
@@ -128,15 +139,34 @@ export default function LandingPage() {
 
           {/* Currently live */}
           <div className="mt-10 flex items-center gap-2 text-[#6B7280] text-sm font-medium">
-            <svg className="w-4 h-4 text-[#1D9E75]" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            <svg
+              className="w-4 h-4 text-[#1D9E75]"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              strokeWidth={2}
+            >
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z"
+              />
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z"
+              />
             </svg>
             Currently live at{" "}
-            {LIVE_COLLEGES.length === 1
-              ? <span className="text-[#111827] font-bold ml-1">{LIVE_COLLEGES[0]}</span>
-              : <span className="text-[#111827] font-bold ml-1">{LIVE_COLLEGES.length} colleges</span>
-            }
+            {LIVE_COLLEGES.length === 1 ? (
+              <span className="text-[#111827] font-bold ml-1">
+                {LIVE_COLLEGES[0]}
+              </span>
+            ) : (
+              <span className="text-[#111827] font-bold ml-1">
+                {LIVE_COLLEGES.length} colleges
+              </span>
+            )}
           </div>
         </div>
 
