@@ -26,12 +26,14 @@ router.post("/sign-up", async (req, res) => {
 
   const domain = email.toLowerCase().split("@")[1];
 
-  const { data: college } = await supabase
+  const { data: college, error: collegeError } = await supabase
     .from("colleges")
     .select("id, name")
     .eq("email_domain", domain)
     .eq("is_active", true)
     .single();
+
+  console.log("[sign-up] domain:", domain, "| college:", college, "| error:", collegeError?.message);
 
   if (!college) {
     // Save to waitlist (ignore duplicates)
