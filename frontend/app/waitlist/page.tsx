@@ -11,6 +11,7 @@ const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
 export default function WaitlistPage() {
   const [email, setEmail] = useState("");
   const [college, setCollege] = useState("");
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState("");
@@ -25,6 +26,7 @@ export default function WaitlistPage() {
       return;
     }
     if (!college.trim()) { setError("College name is required"); return; }
+    if (!agreedToTerms) { setError("You must agree to the Terms & Conditions"); return; }
 
     setLoading(true);
     try {
@@ -114,6 +116,34 @@ export default function WaitlistPage() {
                 value={college}
                 onChange={(e) => { setCollege(e.target.value); setError(""); }}
               />
+
+              {/* Terms checkbox */}
+              <label className="flex items-start gap-2.5 cursor-pointer">
+                <button
+                  type="button"
+                  onClick={() => { setAgreedToTerms((v) => !v); setError(""); }}
+                  style={{ minHeight: 0 }}
+                  className={`mt-0.5 w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                    agreedToTerms ? "bg-[#00599B] border-[#00599B]" : "border-[#D1D5DB]"
+                  }`}
+                >
+                  {agreedToTerms && (
+                    <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                    </svg>
+                  )}
+                </button>
+                <span className="text-sm text-[#374151]">
+                  I agree to the{" "}
+                  <Link href="/terms" target="_blank" className="text-[#00599B] font-medium hover:underline">
+                    Terms &amp; Conditions
+                  </Link>{" "}
+                  and{" "}
+                  <Link href="/privacy" target="_blank" className="text-[#00599B] font-medium hover:underline">
+                    Privacy Policy
+                  </Link>
+                </span>
+              </label>
 
               {error && <p className="text-sm text-red-500">{error}</p>}
 
