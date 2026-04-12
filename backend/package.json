@@ -19,6 +19,8 @@
     "express-validator": "^7.3.2",
     "jsonwebtoken": "^9.0.3",
     "multer": "^2.1.1",
+    "node-cron": "^4.2.1",
+    "resend": "^6.10.0",
     "slugify": "^1.6.9"
   },
   "devDependencies": {

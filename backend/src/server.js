@@ -1,6 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
+const { startCronJobs } = require("./lib/cron");
 
 const authRoutes = require("./routes/auth");
 const collegesRoutes = require("./routes/colleges");
@@ -47,4 +48,5 @@ app.use((err, req, res, next) => {
 
 app.listen(PORT, () => {
   console.log(`DormSy API running on port ${PORT}`);
+  startCronJobs();
 });

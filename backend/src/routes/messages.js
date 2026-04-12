@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const supabase = require("../lib/supabase");
 const { requireAuth } = require("../middleware/auth");
+const { sendNewMessageEmail } = require("../lib/email");
 
 /**
  * GET /messages
@@ -114,7 +115,7 @@ router.post("/", requireAuth, async (req, res) => {
   // Verify the listing exists and is accessible
   const { data: listing } = await supabase
     .from("listings")
-    .select("id, college_id, status")
+    .select("id, college_id, status, title, slug")
     .eq("id", listing_id)
     .single();
 
@@ -139,6 +140,33 @@ router.post("/", requireAuth, async (req, res) => {
     .single();
 
   if (error) return res.status(400).json({ error: error.message });
+
+  // Fire-and-forget: notify receiver by email
+  // Only send if this is the first message in the conversation (avoid spam)
+  supabase
+    .from("messages")
+    .select("id", { count: "exact", head: true })
+    .eq("listing_id", listing_id)
+    .eq("sender_id", senderId)
+    .eq("receiver_id", receiver_id)
+    .then(async ({ count }) => {
+      if (count !== 1) return; // not first message — skip
+      const { data: receiver } = await supabase
+        .from("users")
+        .select("email, first_name")
+        .eq("id", receiver_id)
+        .single();
+      if (!receiver) return;
+      sendNewMessageEmail({
+        toEmail: receiver.email,
+        toName: receiver.first_name,
+        fromUsername: req.userProfile.username,
+        listingTitle: listing.title || "a listing",
+        listingSlug: listing.slug,
+        messagePreview: content.trim().slice(0, 120),
+      });
+    })
+    .catch(() => {});
 
   return res.status(201).json({ message });
 });
