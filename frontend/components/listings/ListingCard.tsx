@@ -5,11 +5,11 @@ import Link from "next/link";
 import { apiRequest, getAuthToken } from "@/lib/utils/api";
 import type { Listing } from "@/types";
 
-const CONDITION_LABEL: Record<string, string> = {
-  new: "New",
-  like_new: "Like New",
-  good: "Good",
-  used: "Used",
+const CONDITION_STYLE: Record<string, { label: string; className: string }> = {
+  new:      { label: "New",      className: "bg-[#E8F7F2] text-[#1D9E75]" },
+  like_new: { label: "Like New", className: "bg-[#E6F0F9] text-[#00599B]" },
+  good:     { label: "Good",     className: "bg-[#FEF9E7] text-[#D97706]" },
+  used:     { label: "Used",     className: "bg-[#F3F4F6] text-[#6B7280]" },
 };
 
 const CATEGORY_LABEL: Record<string, string> = {
@@ -120,10 +120,17 @@ export function ListingCard({ listing, initialSaved = false }: Props) {
           </p>
         </div>
 
-        <div className="flex items-center justify-between mt-auto pt-2">
-          <span className="text-[11px] text-[#9CA3AF] font-medium">
-            {CONDITION_LABEL[listing.condition] ?? listing.condition}
-          </span>
+        <div className="flex items-center justify-between mt-auto pt-2 gap-1 flex-wrap">
+          <div className="flex items-center gap-1">
+            <span className={`text-[10px] font-semibold px-1.5 py-0.5 rounded-full ${CONDITION_STYLE[listing.condition]?.className ?? "bg-[#F3F4F6] text-[#6B7280]"}`}>
+              {CONDITION_STYLE[listing.condition]?.label ?? listing.condition}
+            </span>
+            {listing.is_negotiable && (
+              <span className="text-[10px] font-semibold px-1.5 py-0.5 rounded-full bg-[#F5F0FF] text-[#7C3AED]">
+                OBO
+              </span>
+            )}
+          </div>
           <span className="text-[11px] text-[#9CA3AF]">
             {timeAgo(listing.created_at)}
           </span>

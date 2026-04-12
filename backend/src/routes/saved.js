@@ -33,6 +33,21 @@ router.get("/", requireAuth, async (req, res) => {
 });
 
 /**
+ * GET /saved/ids
+ * Returns just the listing_ids the user has saved (lightweight, for feed)
+ */
+router.get("/ids", requireAuth, async (req, res) => {
+  const userId = req.user.id;
+  const { data, error } = await supabase
+    .from("saved_listings")
+    .select("listing_id")
+    .eq("user_id", userId);
+
+  if (error) return res.status(500).json({ error: error.message });
+  return res.json({ saved: data });
+});
+
+/**
  * POST /saved/:listingId
  * Saves a listing (toggle — saves if not saved, unsaves if saved)
  */

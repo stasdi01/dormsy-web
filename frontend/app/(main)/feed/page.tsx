@@ -30,6 +30,7 @@ function FeedContent() {
   const [loadingMore, setLoadingMore] = useState(false);
   const [search, setSearch] = useState(searchParam);
   const [searchInput, setSearchInput] = useState(searchParam);
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
 
   function setParam(key: string, value: string) {
     const params = new URLSearchParams(searchParams.toString());
@@ -50,12 +51,15 @@ function FeedContent() {
     if (search) params.set("search", search);
 
     try {
-      const data = await apiRequest<{ listings: Listing[]; total: number }>(
-        `/listings?${params.toString()}`,
-        { token }
-      );
-      setListings((prev) => replace ? data.listings : [...prev, ...data.listings]);
-      setTotal(data.total);
+      const [listingsData, savedData] = await Promise.all([
+        apiRequest<{ listings: Listing[]; total: number }>(`/listings?${params.toString()}`, { token }),
+        replace ? apiRequest<{ saved: { listing_id: string }[] }>("/saved/ids", { token }).catch(() => ({ saved: [] })) : Promise.resolve(null),
+      ]);
+      setListings((prev) => replace ? listingsData.listings : [...prev, ...listingsData.listings]);
+      setTotal(listingsData.total);
+      if (savedData) {
+        setSavedIds(new Set(savedData.saved.map((s) => s.listing_id)));
+      }
     } catch {
       // token may be expired — middleware will redirect
     }
@@ -179,7 +183,7 @@ function FeedContent() {
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
           {listings.map((listing) => (
-            <ListingCard key={listing.id} listing={listing} />
+            <ListingCard key={listing.id} listing={listing} initialSaved={savedIds.has(listing.id)} />
           ))}
         </div>
       )}
