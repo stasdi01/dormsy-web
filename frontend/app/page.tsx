@@ -95,7 +95,7 @@ export default function LandingPage() {
                   d="M9 12.75L11.25 15 15 9.75M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
                 />
               </svg>
-              100% free — no fees, ever
+              100% free — no fees at all
             </div>
           </div>
 
@@ -463,9 +463,24 @@ export default function LandingPage() {
             </span>
           </div>
           <div className="flex gap-6">
-            <Link href="/terms" className="hover:text-[#00599B] transition-colors">Terms</Link>
-            <Link href="/privacy" className="hover:text-[#00599B] transition-colors">Privacy</Link>
-            <Link href="/support" className="hover:text-white transition-colors">Support</Link>
+            <Link
+              href="/terms"
+              className="hover:text-[#00599B] transition-colors"
+            >
+              Terms
+            </Link>
+            <Link
+              href="/privacy"
+              className="hover:text-[#00599B] transition-colors"
+            >
+              Privacy
+            </Link>
+            <Link
+              href="/support"
+              className="hover:text-white transition-colors"
+            >
+              Support
+            </Link>
           </div>
         </div>
       </footer>
