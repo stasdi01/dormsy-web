@@ -19,6 +19,7 @@ export default function SignUpPage() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
+  const [agreedToTerms, setAgreedToTerms] = useState(false);
 
   function set(field: string, value: string) {
     setForm((f) => ({ ...f, [field]: value }));
@@ -35,6 +36,7 @@ export default function SignUpPage() {
     if (!form.password) e.password = "Password is required";
     else if (form.password.length < 8)
       e.password = "Password must be at least 8 characters";
+    if (!agreedToTerms) e.terms = "You must agree to the Terms & Conditions";
     setErrors(e);
     return Object.keys(e).length === 0;
   }
@@ -181,6 +183,33 @@ export default function SignUpPage() {
             }
           />
           <PasswordStrength password={form.password} />
+        </div>
+
+        {/* Terms checkbox */}
+        <div className="flex flex-col gap-1">
+          <label className="flex items-start gap-2.5 cursor-pointer">
+            <button
+              type="button"
+              onClick={() => { setAgreedToTerms((v) => !v); setErrors((e) => ({ ...e, terms: "" })); }}
+              style={{ minHeight: 0 }}
+              className={`mt-0.5 w-4 h-4 rounded border-2 flex items-center justify-center flex-shrink-0 transition-colors ${
+                agreedToTerms ? "bg-[#00599B] border-[#00599B]" : errors.terms ? "border-red-400" : "border-[#D1D5DB]"
+              }`}
+            >
+              {agreedToTerms && (
+                <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
+              )}
+            </button>
+            <span className="text-sm text-[#374151]">
+              I agree to the{" "}
+              <Link href="/terms" target="_blank" className="text-[#00599B] font-medium hover:underline">
+                Terms &amp; Conditions
+              </Link>
+            </span>
+          </label>
+          {errors.terms && <p className="text-xs text-red-500 pl-6">{errors.terms}</p>}
         </div>
 
         <Button type="submit" fullWidth loading={loading} size="lg" className="mt-1">
