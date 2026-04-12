@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const supabase = require("../lib/supabase");
-const { requireAuth } = require("../middleware/auth");
+const { requireAuth, requireJwt } = require("../middleware/auth");
 
 /**
  * POST /auth/sign-up
@@ -26,14 +26,12 @@ router.post("/sign-up", async (req, res) => {
 
   const domain = email.toLowerCase().split("@")[1];
 
-  const { data: college, error: collegeError } = await supabase
+  const { data: college } = await supabase
     .from("colleges")
     .select("id, name")
     .eq("email_domain", domain)
     .eq("is_active", true)
     .single();
-
-  console.log("[sign-up] domain:", domain, "| college:", college, "| error:", collegeError?.message);
 
   if (!college) {
     // Save to waitlist (ignore duplicates)
@@ -54,7 +52,7 @@ router.post("/sign-up", async (req, res) => {
  * first_name and last_name are read from Supabase user_metadata
  * (stored there during signUp on the frontend).
  */
-router.post("/create-profile", requireAuth, async (req, res) => {
+router.post("/create-profile", requireJwt, async (req, res) => {
   const userId = req.user.id;
   const email = req.user.email;
 

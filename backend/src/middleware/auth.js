@@ -1,8 +1,31 @@
 const supabase = require("../lib/supabase");
 
 /**
- * Validates the Supabase JWT from the Authorization header.
- * Attaches req.user (Supabase auth user) and req.userProfile (users table row).
+ * Validates the Supabase JWT only — attaches req.user.
+ * Use this for endpoints that run before a profile row exists (e.g. create-profile).
+ */
+async function requireJwt(req, res, next) {
+  const authHeader = req.headers.authorization;
+
+  if (!authHeader || !authHeader.startsWith("Bearer ")) {
+    return res.status(401).json({ error: "Missing or invalid authorization header" });
+  }
+
+  const token = authHeader.split(" ")[1];
+
+  const { data: { user }, error } = await supabase.auth.getUser(token);
+
+  if (error || !user) {
+    return res.status(401).json({ error: "Invalid or expired token" });
+  }
+
+  req.user = user;
+  next();
+}
+
+/**
+ * Validates the Supabase JWT and requires a profile row in the users table.
+ * Attaches req.user and req.userProfile.
  */
 async function requireAuth(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -13,14 +36,12 @@ async function requireAuth(req, res, next) {
 
   const token = authHeader.split(" ")[1];
 
-  // Verify the token with Supabase Auth
   const { data: { user }, error } = await supabase.auth.getUser(token);
 
   if (error || !user) {
     return res.status(401).json({ error: "Invalid or expired token" });
   }
 
-  // Fetch the user's profile from the users table
   const { data: profile, error: profileError } = await supabase
     .from("users")
     .select("*, college:colleges(*)")
@@ -36,4 +57,4 @@ async function requireAuth(req, res, next) {
   next();
 }
 
-module.exports = { requireAuth };
+module.exports = { requireAuth, requireJwt };
