@@ -36,6 +36,10 @@ export default function SignUpPage() {
     if (!form.password) e.password = "Password is required";
     else if (form.password.length < 8)
       e.password = "Password must be at least 8 characters";
+    else if (!/[0-9]/.test(form.password))
+      e.password = "Password must contain at least one number";
+    else if (!/[^a-zA-Z0-9]/.test(form.password))
+      e.password = "Password must contain at least one special character";
     if (!agreedToTerms) e.terms = "You must agree to the Terms & Conditions";
     setErrors(e);
     return Object.keys(e).length === 0;
