@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 
-const LIVE_COLLEGES = ["Luther College"];
+const LIVE_COLLEGES = ["Luther College"]; // v2
 
 const COMING_SOON_COLLEGES = ["Barry University", "Grinnell College"];
 
