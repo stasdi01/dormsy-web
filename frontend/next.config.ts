@@ -18,7 +18,7 @@ const securityHeaders = [
       "style-src 'self' 'unsafe-inline'",
       "img-src 'self' data: blob: https://*.supabase.co https://www.google-analytics.com",
       "font-src 'self'",
-      "connect-src 'self' https://*.supabase.co https://www.google-analytics.com https://dormsy-web-production.up.railway.app",
+      "connect-src 'self' https://*.supabase.co wss://*.supabase.co https://www.google-analytics.com https://dormsy-web-production.up.railway.app",
       "frame-ancestors 'none'",
       "base-uri 'self'",
       "form-action 'self'",
