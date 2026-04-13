@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiRequest, getAuthToken } from "@/lib/utils/api";
+import { convertIfHeic } from "@/lib/utils/convertHeic";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import type { Category, Condition } from "@/types";
@@ -32,7 +33,7 @@ const CATEGORY_LABEL: Record<string, string> = {
 };
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
-const MAX_PHOTOS = 3;
+const MAX_PHOTOS = 5;
 const TITLE_MAX = 60;
 const DESC_MAX = 300;
 
@@ -66,7 +67,8 @@ export default function NewListingPage() {
     e.target.value = "";
 
     const remaining = MAX_PHOTOS - photos.length;
-    const toAdd = files.slice(0, remaining);
+    const rawFiles = files.slice(0, remaining);
+    const toAdd = await Promise.all(rawFiles.map(convertIfHeic));
 
     const slots: PhotoSlot[] = toAdd.map((file) => ({
       file,
@@ -393,7 +395,7 @@ export default function NewListingPage() {
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/*"
+            accept="image/*,.heic,.heif"
             multiple
             className="hidden"
             onChange={handlePhotoPick}
