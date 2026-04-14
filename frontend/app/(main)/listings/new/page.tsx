@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiRequest, getAuthToken } from "@/lib/utils/api";
+import { convertIfHeic } from "@/lib/utils/convertHeic";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import type { Category, Condition } from "@/types";
@@ -66,7 +67,7 @@ export default function NewListingPage() {
     e.target.value = "";
 
     const remaining = MAX_PHOTOS - photos.length;
-    const toAdd = files.slice(0, remaining);
+    const toAdd = await Promise.all(files.slice(0, remaining).map(convertIfHeic));
 
     const slots: PhotoSlot[] = toAdd.map((file) => ({
       file,
