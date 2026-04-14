@@ -99,7 +99,13 @@ export default function EditListingPage() {
     e.target.value = "";
 
     const remaining = MAX_PHOTOS - photos.length;
-    const toAdd = await Promise.all(files.slice(0, remaining).map(convertIfHeic));
+    let toAdd: File[];
+    try {
+      toAdd = await Promise.all(files.slice(0, remaining).map(convertIfHeic));
+    } catch {
+      setErrors({ photos: "Could not process HEIC photo. Please go to your iPhone Settings → Camera → Formats and select 'Most Compatible', then retake the photo." });
+      return;
+    }
 
     const slots: PhotoSlot[] = toAdd.map((file) => ({
       file,
