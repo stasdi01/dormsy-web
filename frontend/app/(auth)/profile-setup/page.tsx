@@ -35,6 +35,13 @@ export default function ProfileSetupPage() {
     const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:4000";
     supabase.auth.getSession().then(async ({ data: { session } }) => {
       if (!session) return;
+
+      // Ensure profile row exists (idempotent — safe to call multiple times)
+      await fetch(`${apiUrl}/auth/create-profile`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${session.access_token}` },
+      });
+
       const res = await fetch(`${apiUrl}/auth/me`, {
         headers: { Authorization: `Bearer ${session.access_token}` },
       });
