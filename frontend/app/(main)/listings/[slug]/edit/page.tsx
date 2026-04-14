@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { apiRequest, getAuthToken } from "@/lib/utils/api";
-import { convertIfHeic } from "@/lib/utils/convertHeic";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import type { Category, Condition, Listing } from "@/types";
@@ -99,8 +98,7 @@ export default function EditListingPage() {
     e.target.value = "";
 
     const remaining = MAX_PHOTOS - photos.length;
-    const rawFiles = files.slice(0, remaining);
-    const toAdd = await Promise.all(rawFiles.map(convertIfHeic));
+    const toAdd = files.slice(0, remaining);
 
     const slots: PhotoSlot[] = toAdd.map((file) => ({
       file,

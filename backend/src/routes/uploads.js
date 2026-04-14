@@ -3,6 +3,7 @@ const router = express.Router();
 const supabase = require("../lib/supabase");
 const { requireAuth } = require("../middleware/auth");
 const multer = require("multer");
+const sharp = require("sharp");
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -25,13 +26,33 @@ router.post("/listing-photo", requireAuth, upload.single("photo"), async (req, r
   }
 
   const userId = req.user.id;
-  const ext = req.file.mimetype.split("/")[1];
+
+  // Convert HEIC/HEIF to JPEG on the backend
+  const isHeic = req.file.mimetype === "image/heic" || req.file.mimetype === "image/heif"
+    || req.file.originalname?.toLowerCase().endsWith(".heic")
+    || req.file.originalname?.toLowerCase().endsWith(".heif");
+
+  let buffer = req.file.buffer;
+  let contentType = req.file.mimetype || "image/jpeg";
+  let ext = contentType.split("/")[1] || "jpg";
+
+  if (isHeic) {
+    try {
+      buffer = await sharp(req.file.buffer).jpeg({ quality: 85 }).toBuffer();
+      contentType = "image/jpeg";
+      ext = "jpg";
+    } catch (err) {
+      console.error("[uploads] HEIC conversion failed:", err.message);
+      return res.status(400).json({ error: "Could not process HEIC image. Please convert to JPEG first." });
+    }
+  }
+
   const filename = `listings/${userId}/${Date.now()}.${ext}`;
 
   const { error } = await supabase.storage
     .from("dormsy")
-    .upload(filename, req.file.buffer, {
-      contentType: req.file.mimetype,
+    .upload(filename, buffer, {
+      contentType,
       upsert: false,
     });
 
