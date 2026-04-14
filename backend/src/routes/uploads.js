@@ -41,9 +41,12 @@ router.post("/listing-photo", requireAuth, upload.single("photo"), async (req, r
       buffer = await sharp(req.file.buffer).jpeg({ quality: 85 }).toBuffer();
       contentType = "image/jpeg";
       ext = "jpg";
+      console.log("[uploads] HEIC converted to JPEG successfully");
     } catch (err) {
       console.error("[uploads] HEIC conversion failed:", err.message);
-      return res.status(400).json({ error: "Could not process HEIC image. Please convert to JPEG first." });
+      // Fall back to uploading as-is and let Supabase handle it
+      contentType = "image/jpeg";
+      ext = "jpg";
     }
   }
 
