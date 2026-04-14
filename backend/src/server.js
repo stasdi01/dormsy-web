@@ -17,6 +17,9 @@ const supportRoutes = require("./routes/support");
 const app = express();
 const PORT = process.env.PORT || 4000;
 
+// Trust Railway's proxy for accurate IP detection (required for rate limiting)
+app.set("trust proxy", 1);
+
 // Security headers
 app.use(helmet());
 
