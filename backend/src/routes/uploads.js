@@ -3,7 +3,7 @@ const router = express.Router();
 const supabase = require("../lib/supabase");
 const { requireAuth } = require("../middleware/auth");
 const multer = require("multer");
-const sharp = require("sharp");
+const heicConvert = require("heic-convert");
 
 const upload = multer({
   storage: multer.memoryStorage(),
@@ -17,8 +17,26 @@ const upload = multer({
 });
 
 /**
+ * Converts a HEIC/HEIF buffer to JPEG.
+ * Returns { buffer, contentType, ext } for the converted image.
+ */
+async function convertHeicToJpeg(inputBuffer) {
+  const outputBuffer = await heicConvert({
+    buffer: inputBuffer,
+    format: "JPEG",
+    quality: 0.85,
+  });
+  return {
+    buffer: Buffer.from(outputBuffer),
+    contentType: "image/jpeg",
+    ext: "jpg",
+  };
+}
+
+/**
  * POST /uploads/listing-photo
- * Uploads a single listing photo to Supabase Storage
+ * Uploads a single listing photo to Supabase Storage.
+ * Automatically converts HEIC/HEIF to JPEG.
  */
 router.post("/listing-photo", requireAuth, upload.single("photo"), async (req, res) => {
   if (!req.file) {
@@ -27,10 +45,11 @@ router.post("/listing-photo", requireAuth, upload.single("photo"), async (req, r
 
   const userId = req.user.id;
 
-  // Convert HEIC/HEIF to JPEG on the backend
-  const isHeic = req.file.mimetype === "image/heic" || req.file.mimetype === "image/heif"
-    || req.file.originalname?.toLowerCase().endsWith(".heic")
-    || req.file.originalname?.toLowerCase().endsWith(".heif");
+  const isHeic =
+    req.file.mimetype === "image/heic" ||
+    req.file.mimetype === "image/heif" ||
+    req.file.originalname?.toLowerCase().endsWith(".heic") ||
+    req.file.originalname?.toLowerCase().endsWith(".heif");
 
   let buffer = req.file.buffer;
   let contentType = req.file.mimetype || "image/jpeg";
@@ -38,15 +57,11 @@ router.post("/listing-photo", requireAuth, upload.single("photo"), async (req, r
 
   if (isHeic) {
     try {
-      buffer = await sharp(req.file.buffer).jpeg({ quality: 85 }).toBuffer();
-      contentType = "image/jpeg";
-      ext = "jpg";
+      ({ buffer, contentType, ext } = await convertHeicToJpeg(req.file.buffer));
       console.log("[uploads] HEIC converted to JPEG successfully");
     } catch (err) {
       console.error("[uploads] HEIC conversion failed:", err.message);
-      // Fall back to uploading as-is and let Supabase handle it
-      contentType = "image/jpeg";
-      ext = "jpg";
+      return res.status(400).json({ error: "Could not convert HEIC image. Please use JPEG or PNG." });
     }
   }
 
@@ -54,10 +69,7 @@ router.post("/listing-photo", requireAuth, upload.single("photo"), async (req, r
 
   const { error } = await supabase.storage
     .from("dormsy")
-    .upload(filename, buffer, {
-      contentType,
-      upsert: false,
-    });
+    .upload(filename, buffer, { contentType, upsert: false });
 
   if (error) return res.status(500).json({ error: error.message });
 
@@ -70,7 +82,7 @@ router.post("/listing-photo", requireAuth, upload.single("photo"), async (req, r
 
 /**
  * POST /uploads/avatar
- * Uploads a user avatar to Supabase Storage
+ * Uploads a user avatar to Supabase Storage.
  */
 router.post("/avatar", requireAuth, upload.single("photo"), async (req, res) => {
   if (!req.file) {
@@ -83,10 +95,7 @@ router.post("/avatar", requireAuth, upload.single("photo"), async (req, res) => 
 
   const { error } = await supabase.storage
     .from("dormsy")
-    .upload(filename, req.file.buffer, {
-      contentType: req.file.mimetype,
-      upsert: true,
-    });
+    .upload(filename, req.file.buffer, { contentType: req.file.mimetype, upsert: true });
 
   if (error) return res.status(500).json({ error: error.message });
 
