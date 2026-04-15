@@ -60,7 +60,7 @@ function VerifyEmailContent() {
       <div className="text-left bg-[#F9FAFB] rounded-xl p-4 mb-6 space-y-3">
         {[
           { step: "1", text: "Open your college email inbox" },
-          { step: "2", text: "Click the verification link in the email" },
+          { step: "2", text: "Click the verification link in the email from this same browser — do not switch browsers" },
           { step: "3", text: "You'll be signed in automatically" },
         ].map(({ step, text }) => (
           <div key={step} className="flex items-center gap-3">

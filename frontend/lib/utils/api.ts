@@ -46,10 +46,11 @@ export async function getAuthToken(): Promise<string | null> {
   if (typeof window === "undefined") return null;
   const { createClient } = await import("@/lib/supabase/client");
   const supabase = createClient();
-  // getSession reads from storage; refreshSession ensures the token is valid
+
+  // getUser() validates against Supabase server and auto-refreshes the token
+  const { data: { user } } = await supabase.auth.getUser();
+  if (!user) return null;
+
   const { data: { session } } = await supabase.auth.getSession();
-  if (session?.access_token) return session.access_token;
-  // Fall back to refreshing the session
-  const { data: refreshed } = await supabase.auth.refreshSession();
-  return refreshed.session?.access_token ?? null;
+  return session?.access_token ?? null;
 }
