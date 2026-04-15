@@ -54,7 +54,6 @@ router.post("/", requireAuth, async (req, res) => {
     const categoryLabel = CATEGORY_LABELS[category] || category;
     const userEmail = req.user.email || "unknown";
 
-    console.log(`[feedback] Sending email from="${FROM}" to="${SUPPORT_EMAIL}"`);
     resend.emails.send({
       from: FROM,
       to: SUPPORT_EMAIL,
