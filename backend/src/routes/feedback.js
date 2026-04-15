@@ -54,6 +54,7 @@ router.post("/", requireAuth, async (req, res) => {
     const categoryLabel = CATEGORY_LABELS[category] || category;
     const userEmail = req.user.email || "unknown";
 
+    console.log(`[feedback] Sending email from="${FROM}" to="${SUPPORT_EMAIL}"`);
     resend.emails.send({
       from: FROM,
       to: SUPPORT_EMAIL,
@@ -89,7 +90,8 @@ router.post("/", requireAuth, async (req, res) => {
         </body>
         </html>
       `,
-    }).catch((err) => console.error("[feedback] Email send failed:", err.message));
+    }).then(() => console.log("[feedback] Email sent successfully"))
+      .catch((err) => console.error("[feedback] Email send failed:", err));
   }
 
   res.json({ ok: true });
