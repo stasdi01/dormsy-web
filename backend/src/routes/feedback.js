@@ -90,8 +90,14 @@ router.post("/", requireAuth, async (req, res) => {
         </body>
         </html>
       `,
-    }).then(() => console.log("[feedback] Email sent successfully"))
-      .catch((err) => console.error("[feedback] Email send failed:", err));
+    }).then(({ data, error: resendError }) => {
+        if (resendError) {
+          console.error("[feedback] Email send failed:", resendError);
+        } else {
+          console.log("[feedback] Email sent successfully, id:", data?.id);
+        }
+      })
+      .catch((err) => console.error("[feedback] Email network error:", err));
   }
 
   res.json({ ok: true });
