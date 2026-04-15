@@ -24,8 +24,9 @@ export default async function proxy(req: NextRequest) {
   if (isPublic) return NextResponse.next();
 
   // Check for Supabase session cookie (optimistic check)
+  // Supabase SSR may split tokens into chunks: sb-xxx-auth-token.0, .1, etc.
   const hasSbCookie = req.cookies.getAll().some(
-    (c) => c.name.startsWith("sb-") && c.name.endsWith("-auth-token")
+    (c) => c.name.startsWith("sb-") && c.name.includes("-auth-token")
   );
 
   if (!hasSbCookie) {
