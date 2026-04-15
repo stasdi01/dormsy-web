@@ -13,6 +13,7 @@ const usersRoutes = require("./routes/users");
 const savedRoutes = require("./routes/saved");
 const uploadsRoutes = require("./routes/uploads");
 const supportRoutes = require("./routes/support");
+const feedbackRoutes = require("./routes/feedback");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -79,6 +80,7 @@ app.use("/users", usersRoutes);
 app.use("/saved", savedRoutes);
 app.use("/uploads", uploadsRoutes);
 app.use("/support", supportRoutes);
+app.use("/feedback", feedbackRoutes);
 
 // 404
 app.use((req, res) => res.status(404).json({ error: "Route not found" }));

@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 import { apiRequest, getAuthToken } from "@/lib/utils/api";
 import { Button } from "@/components/ui/Button";
@@ -376,6 +377,23 @@ export default function SettingsPage() {
             )}
           </div>
         </form>
+      </section>
+
+      {/* ── Feedback section ── */}
+      <section className="bg-white border border-[#E5E7EB] rounded-2xl p-6">
+        <h2 className="text-base font-semibold text-[#111827] mb-1">Feedback</h2>
+        <p className="text-sm text-[#6B7280] mb-4">
+          Help us improve DormSy — share what&apos;s working and what isn&apos;t.
+        </p>
+        <Link
+          href="/feedback"
+          className="inline-flex items-center gap-2 text-sm font-medium text-[#00599B] hover:underline transition-colors"
+        >
+          Share feedback
+          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+          </svg>
+        </Link>
       </section>
 
       {/* ── Account section ── */}
