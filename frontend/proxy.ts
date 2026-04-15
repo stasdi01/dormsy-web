@@ -21,7 +21,18 @@ export default async function proxy(req: NextRequest) {
     PUBLIC_ROUTES.some((r) => pathname === r || pathname.startsWith(r + "/")) ||
     pathname.startsWith("/listings/");
 
-  if (isPublic) return NextResponse.next();
+  if (isPublic) {
+    // Redirect logged-in users away from landing/auth pages to feed
+    const hasSbCookiePublic = req.cookies.getAll().some(
+      (c) => c.name.startsWith("sb-") && c.name.includes("-auth-token")
+    );
+    if (hasSbCookiePublic && (pathname === "/" || pathname === "/login" || pathname === "/sign-up")) {
+      const url = req.nextUrl.clone();
+      url.pathname = "/feed";
+      return NextResponse.redirect(url);
+    }
+    return NextResponse.next();
+  }
 
   // Check for Supabase session cookie (optimistic check)
   // Supabase SSR may split tokens into chunks: sb-xxx-auth-token.0, .1, etc.
