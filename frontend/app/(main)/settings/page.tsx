@@ -114,8 +114,8 @@ export default function SettingsPage() {
     try {
       const token = await getAuthToken();
 
-      // Upload new avatar if changed
-      let avatarUrl = user?.avatar_url ?? null;
+      // Upload new avatar if changed, or clear it if removed
+      let avatarUrl = avatarPreview === null ? null : (user?.avatar_url ?? null);
       if (avatarFile) {
         const fd = new FormData();
         fd.append("photo", avatarFile);
@@ -260,14 +260,14 @@ export default function SettingsPage() {
               >
                 Change photo
               </button>
-              {avatarFile && (
+              {(avatarFile || avatarPreview) && (
                 <button
                   type="button"
-                  onClick={() => { setAvatarFile(null); setAvatarPreview(user?.avatar_url ?? null); }}
+                  onClick={() => { setAvatarFile(null); setAvatarPreview(null); }}
                   style={{ minHeight: 0 }}
                   className="block text-xs text-[#9CA3AF] hover:text-red-500 mt-0.5 transition-colors"
                 >
-                  Remove
+                  Remove photo
                 </button>
               )}
               <p className="text-xs text-[#9CA3AF] mt-0.5">JPG, PNG or GIF · max 10MB</p>
