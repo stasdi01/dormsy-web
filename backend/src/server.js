@@ -1,4 +1,12 @@
 require("dotenv").config();
+
+process.on("unhandledRejection", (reason) => {
+  console.error("[server] Unhandled promise rejection:", reason);
+});
+
+process.on("uncaughtException", (err) => {
+  console.error("[server] Uncaught exception:", err);
+});
 const express = require("express");
 const cors = require("cors");
 const helmet = require("helmet");
@@ -27,7 +35,7 @@ app.use(helmet());
 // Rate limiting
 const generalLimiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 200,
+  max: 500,
   standardHeaders: true,
   legacyHeaders: false,
   message: { error: "Too many requests, please try again later." },

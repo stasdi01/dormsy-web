@@ -76,6 +76,8 @@ export function ListingCard({ listing, initialSaved = false }: Props) {
           <img
             src={photo.storage_url}
             alt={listing.title}
+            loading="lazy"
+            decoding="async"
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
           />
         ) : (
