@@ -41,10 +41,12 @@ export default function ForgotPasswordPage() {
           </svg>
         </div>
         <h2 className="text-xl font-bold text-[#111827] mb-2">Check your inbox</h2>
-        <p className="text-sm text-[#6B7280] mb-6">
+        <p className="text-sm text-[#6B7280] mb-2">
           We sent a password reset link to{" "}
           <span className="font-medium text-[#111827]">{email}</span>.
-          Check your college email.
+        </p>
+        <p className="text-sm text-[#6B7280] mb-6">
+          Don&apos;t see it? Check your <span className="font-medium text-[#111827]">spam or junk folder</span>.
         </p>
         <Link href="/login">
           <Button variant="secondary" fullWidth>

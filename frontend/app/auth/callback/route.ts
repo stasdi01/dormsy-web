@@ -1,20 +1,37 @@
 import { createClient } from "@/lib/supabase/server";
 import { NextResponse } from "next/server";
+import type { EmailOtpType } from "@supabase/supabase-js";
 
 export async function GET(request: Request) {
   const { searchParams, origin } = new URL(request.url);
   const code = searchParams.get("code");
-
-  if (!code) {
-    return NextResponse.redirect(`${origin}/login?error=missing_code`);
-  }
+  const token_hash = searchParams.get("token_hash");
+  const type = searchParams.get("type") as EmailOtpType | null;
 
   const supabase = await createClient();
-  const { data: { session }, error } = await supabase.auth.exchangeCodeForSession(code);
 
-  if (error || !session) {
-    return NextResponse.redirect(`${origin}/login?error=auth_failed`);
+  if (token_hash && type) {
+    // Token hash flow — works cross-browser (no code_verifier needed)
+    const { data: { session }, error } = await supabase.auth.verifyOtp({ token_hash, type });
+    if (error || !session) {
+      return NextResponse.redirect(`${origin}/login?error=auth_failed`);
+    }
+    return handleSession(session, origin);
   }
+
+  if (code) {
+    // PKCE flow — same browser only
+    const { data: { session }, error } = await supabase.auth.exchangeCodeForSession(code);
+    if (error || !session) {
+      return NextResponse.redirect(`${origin}/login?error=auth_failed`);
+    }
+    return handleSession(session, origin);
+  }
+
+  return NextResponse.redirect(`${origin}/login?error=missing_code`);
+}
+
+async function handleSession(session: { access_token: string }, origin: string) {
 
   // Call backend to create the users table profile row (idempotent)
   try {
