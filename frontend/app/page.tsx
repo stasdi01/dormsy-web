@@ -120,6 +120,11 @@ export default function LandingPage() {
           .lp-waitlist-box { padding: 40px 32px !important; }
         }
 
+        /* ── Desktop only: more breathing room below CTA buttons ── */
+        @media (min-width: 601px) {
+          .lp-hero-meta { margin-top: 48px !important; }
+        }
+
         /* ── Phone ── */
         @media (max-width: 600px) {
           .lp-float-card { display: none !important; }
@@ -147,8 +152,9 @@ export default function LandingPage() {
           .lp-section { padding: 56px 0 !important; }
           .lp-section-head { margin-bottom: 40px !important; }
           .lp-container { padding: 0 20px !important; }
-          .lp-chat-bubble-them { max-width: 85% !important; font-size: 12px !important; }
-          .lp-chat-bubble-me { max-width: 85% !important; font-size: 12px !important; }
+          .lp-chat-art { aspect-ratio: unset !important; height: 340px !important; }
+          .lp-chat-bubble-them { max-width: 88% !important; font-size: 13px !important; }
+          .lp-chat-bubble-me { max-width: 88% !important; font-size: 13px !important; }
           .lp-orbit-chip { font-size: 11px !important; padding: 8px 10px !important; }
         }
 
@@ -204,7 +210,7 @@ export default function LandingPage() {
             <Link href="/login" className="lp-btn lp-btn-outline lp-btn-lg">I already have an account</Link>
           </div>
 
-          <div style={{ marginTop: 28, display: "inline-flex", alignItems: "center", gap: 8, color: "#5A6473", fontSize: 14 }}>
+          <div className="lp-hero-meta" style={{ marginTop: 28, display: "inline-flex", alignItems: "center", gap: 8, color: "#5A6473", fontSize: 14 }}>
             <span className="lp-pulse" />
             Currently live at <strong style={{ color: "#0A1220", fontWeight: 600, marginLeft: 4 }}>Luther College</strong>
           </div>
@@ -440,21 +446,21 @@ export default function LandingPage() {
               <p style={{ color: "#5A6473", fontSize: 16, margin: "0 0 16px", lineHeight: 1.65, maxWidth: 460 }}>Message buyers and sellers in-app under your handle — no phone numbers needed until you&apos;re ready. When you are, agree on a campus spot, hand off in person, and you&apos;re done.</p>
               <p style={{ color: "#5A6473", fontSize: 16, margin: 0, lineHeight: 1.65, maxWidth: 460 }}>No shipping labels. No tracking numbers. No marketplace fees.</p>
             </div>
-            <div style={{ aspectRatio: "1.08 / 1", background: "linear-gradient(180deg, #F1F6FB 0%, #E5EEF6 100%)", borderRadius: 24, border: "1px solid #EFF2F6", position: "relative", overflow: "hidden" }}>
+            <div className="lp-chat-art" style={{ aspectRatio: "1.08 / 1", background: "linear-gradient(180deg, #F1F6FB 0%, #E5EEF6 100%)", borderRadius: 24, border: "1px solid #EFF2F6", position: "relative", overflow: "hidden" }}>
               {/* Chat mockup */}
               <div style={{ position: "absolute", left: "8%", right: "8%", top: "8%", bottom: "8%", background: "#FFFFFF", borderRadius: 18, boxShadow: "0 8px 24px -10px rgba(10,18,32,0.10)", overflow: "hidden", display: "flex", flexDirection: "column" }}>
-                <div style={{ padding: "14px 18px", borderBottom: "1px solid #EFF2F6", display: "flex", alignItems: "center", gap: 10 }}>
-                  <div style={{ width: 30, height: 30, borderRadius: 999, background: "#E5EEF6", color: "#00599B", display: "grid", placeItems: "center", fontSize: 12, fontWeight: 600, flexShrink: 0 }}>S</div>
+                <div style={{ padding: "14px 18px", borderBottom: "1px solid #EFF2F6", display: "flex", alignItems: "center", gap: 10, flexShrink: 0 }}>
+                  <div style={{ width: 32, height: 32, borderRadius: 999, background: "#E5EEF6", color: "#00599B", display: "grid", placeItems: "center", fontSize: 13, fontWeight: 600, flexShrink: 0 }}>S</div>
                   <div>
                     <div style={{ fontSize: 13, fontWeight: 600, letterSpacing: "-0.01em" }}>@stasdi01</div>
                     <div style={{ fontSize: 11, color: "#5A6473" }}>Re: Mini-fridge Galanz</div>
                   </div>
                 </div>
-                <div style={{ flex: 1, padding: "22px 18px", display: "flex", flexDirection: "column", gap: 10, overflow: "hidden" }}>
-                  <div style={{ textAlign: "center", fontSize: 11, color: "#8893A2", marginBottom: 6 }}>Today</div>
-                  <div className="lp-chat-bubble-them" style={{ alignSelf: "flex-start", background: "#E5EEF6", color: "#0A1220", padding: "10px 14px", borderRadius: 14, borderBottomLeftRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "70%" }}>Hey! Is the mini-fridge still available?</div>
-                  <div className="lp-chat-bubble-me" style={{ alignSelf: "flex-end", background: "#00599B", color: "#FFFFFF", padding: "10px 14px", borderRadius: 14, borderBottomRightRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "70%" }}>Yep — pickup near Olin around 4?</div>
-                  <div className="lp-chat-bubble-them" style={{ alignSelf: "flex-start", background: "#E5EEF6", color: "#0A1220", padding: "10px 14px", borderRadius: 14, borderBottomLeftRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "70%" }}>Perfect. Cash okay?</div>
+                <div style={{ flex: 1, padding: "16px 18px", display: "flex", flexDirection: "column", gap: 8, overflowY: "auto" }}>
+                  <div style={{ textAlign: "center", fontSize: 11, color: "#8893A2", marginBottom: 4 }}>Today</div>
+                  <div className="lp-chat-bubble-them" style={{ alignSelf: "flex-start", background: "#E5EEF6", color: "#0A1220", padding: "10px 14px", borderRadius: 14, borderBottomLeftRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "80%" }}>Hey! Is the mini-fridge still available?</div>
+                  <div className="lp-chat-bubble-me" style={{ alignSelf: "flex-end", background: "#00599B", color: "#FFFFFF", padding: "10px 14px", borderRadius: 14, borderBottomRightRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "80%" }}>Yep — pickup near Olin around 4?</div>
+                  <div className="lp-chat-bubble-them" style={{ alignSelf: "flex-start", background: "#E5EEF6", color: "#0A1220", padding: "10px 14px", borderRadius: 14, borderBottomLeftRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "80%" }}>Perfect. Cash okay?</div>
                   <div className="lp-typing" style={{ alignSelf: "flex-start", display: "inline-flex", gap: 3, padding: "10px 14px", background: "#E5EEF6", borderRadius: 14, borderBottomLeftRadius: 4 }}>
                     <span/><span/><span/>
                   </div>
