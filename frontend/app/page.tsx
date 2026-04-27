@@ -106,28 +106,9 @@ export default function LandingPage() {
         .lp-problem-card:hover, .lp-outcome-card:hover { transform: translateY(-4px); box-shadow: 0 8px 24px -10px rgba(10,18,32,0.10), 0 2px 6px rgba(10,18,32,0.04); border-color: transparent; }
         .lp-college-card:hover { transform: translateY(-2px); box-shadow: 0 1px 2px rgba(10,18,32,0.04); }
 
-        @media (max-width: 600px) {
-          .lp-float-card { display: none !important; }
-          .lp-hero-art { height: 280px !important; }
-          .lp-hero-art svg { min-width: 720px !important; }
-          .lp-hero-cta { flex-direction: column !important; }
-          .lp-hero-cta button, .lp-hero-cta a { width: 100% !important; }
-          .lp-sol-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
-          .lp-sol-art { aspect-ratio: 1.1 / 1 !important; }
-          .lp-sol-flip-copy { order: 1 !important; }
-          .lp-sol-flip-art { order: 2 !important; }
-          .lp-problem-grid { grid-template-columns: 1fr !important; }
-          .lp-outcomes-grid { grid-template-columns: 1fr !important; }
-          .lp-colleges-grid { grid-template-columns: 1fr !important; }
-          .lp-trust-grid { grid-template-columns: 1fr !important; }
-          .lp-foot-grid { grid-template-columns: 1fr 1fr !important; gap: 28px !important; }
-          .lp-nav-ghost { display: none !important; }
-          .lp-waitlist-form { flex-direction: column !important; }
-          .lp-final-art { height: 200px !important; }
-          .lp-final-art svg { min-width: 720px !important; }
-        }
+        /* ── Tablet ── */
         @media (max-width: 860px) {
-          .lp-sol-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
+          .lp-sol-grid { grid-template-columns: 1fr !important; gap: 36px !important; padding: 40px 0 !important; }
           .lp-trust-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
           .lp-sol-flip-copy { order: 1 !important; }
           .lp-sol-flip-art { order: 2 !important; }
@@ -135,6 +116,46 @@ export default function LandingPage() {
           .lp-outcomes-grid { grid-template-columns: 1fr !important; }
           .lp-colleges-grid { grid-template-columns: repeat(2, 1fr) !important; }
           .lp-foot-grid { grid-template-columns: 1fr 1fr !important; }
+          .lp-section { padding: 72px 0 !important; }
+          .lp-waitlist-box { padding: 40px 32px !important; }
+        }
+
+        /* ── Phone ── */
+        @media (max-width: 600px) {
+          .lp-float-card { display: none !important; }
+          .lp-hero-art { height: 260px !important; margin-top: 36px !important; }
+          .lp-hero-art svg { min-width: 720px !important; }
+          .lp-hero-inner { padding: 52px 20px 0 !important; }
+          .lp-hero-cta { flex-direction: column !important; width: 100% !important; }
+          .lp-hero-cta a { width: 100% !important; justify-content: center !important; }
+          .lp-sol-grid { grid-template-columns: 1fr !important; gap: 24px !important; padding: 28px 0 !important; }
+          .lp-sol-art { aspect-ratio: 1.15 / 1 !important; }
+          .lp-sol-flip-copy { order: 1 !important; }
+          .lp-sol-flip-art { order: 2 !important; }
+          .lp-problem-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+          .lp-outcomes-grid { grid-template-columns: 1fr !important; gap: 12px !important; }
+          .lp-colleges-grid { grid-template-columns: 1fr !important; gap: 10px !important; }
+          .lp-trust-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+          .lp-foot-grid { grid-template-columns: 1fr 1fr !important; gap: 24px !important; }
+          .lp-nav-ghost { display: none !important; }
+          .lp-waitlist-form { flex-direction: column !important; }
+          .lp-waitlist-form input { width: 100% !important; }
+          .lp-waitlist-form button { width: 100% !important; }
+          .lp-waitlist-box { padding: 28px 20px !important; border-radius: 16px !important; }
+          .lp-final-art { height: 180px !important; margin-top: 36px !important; }
+          .lp-final-art svg { min-width: 720px !important; }
+          .lp-section { padding: 56px 0 !important; }
+          .lp-section-head { margin-bottom: 40px !important; }
+          .lp-container { padding: 0 20px !important; }
+          .lp-chat-bubble-them { max-width: 85% !important; font-size: 12px !important; }
+          .lp-chat-bubble-me { max-width: 85% !important; font-size: 12px !important; }
+          .lp-orbit-chip { font-size: 11px !important; padding: 8px 10px !important; }
+        }
+
+        /* ── Small phone ── */
+        @media (max-width: 380px) {
+          .lp-container { padding: 0 16px !important; }
+          .lp-waitlist-box { padding: 24px 16px !important; }
         }
       `}</style>
 
@@ -161,7 +182,7 @@ export default function LandingPage() {
 
       {/* ── 1. Hero ── */}
       <section style={{ position: "relative", overflow: "hidden", background: "linear-gradient(180deg, #FFFFFF 0%, #F4F8FC 60%, #E8F0F8 100%)" }}>
-        <div style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "96px 28px 0", maxWidth: 920, margin: "0 auto" }}>
+        <div className="lp-hero-inner" style={{ position: "relative", zIndex: 2, textAlign: "center", padding: "96px 28px 0", maxWidth: 920, margin: "0 auto" }}>
           <span style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "#FFFFFF", border: "1px solid #E6E9EE", borderRadius: 999, padding: "6px 14px 6px 6px", fontSize: 13, fontWeight: 500, color: "#2B3340", boxShadow: "0 1px 2px rgba(10,18,32,0.04)", marginBottom: 28 }}>
             <span style={{ background: "#E6F4EE", color: "#1D9E75", fontWeight: 600, borderRadius: 999, padding: "3px 10px", fontSize: 11, letterSpacing: "0.04em", textTransform: "uppercase" }}>New</span>
             Now live at Luther College
@@ -294,8 +315,8 @@ export default function LandingPage() {
       </section>
 
       {/* ── 2. Problem ── */}
-      <section style={{ padding: "120px 0", background: "#FFFFFF" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
+      <section className="lp-section" style={{ padding: "120px 0", background: "#FFFFFF" }}>
+        <div className="lp-container" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
           <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 72px" }}>
             <span style={{ display: "inline-block", fontSize: 13, fontWeight: 600, color: "#00599B", marginBottom: 12, letterSpacing: "-0.005em" }}>The problem</span>
             <h2 style={{ fontSize: "clamp(34px, 4.5vw, 52px)", lineHeight: 1.05, letterSpacing: "-0.035em", fontWeight: 700, margin: "0 0 16px", color: "#0A1220" }}>Buying &amp; selling on campus is broken</h2>
@@ -330,8 +351,8 @@ export default function LandingPage() {
       </section>
 
       {/* ── 3. How it works (alternating) ── */}
-      <section style={{ padding: "96px 0", background: "#F9FAFB" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
+      <section className="lp-section" style={{ padding: "96px 0", background: "#F9FAFB" }}>
+        <div className="lp-container" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
           <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 72px" }}>
             <span style={{ display: "inline-block", fontSize: 13, fontWeight: 600, color: "#00599B", marginBottom: 12 }}>How DormSy works</span>
             <h2 style={{ fontSize: "clamp(34px, 4.5vw, 52px)", lineHeight: 1.05, letterSpacing: "-0.035em", fontWeight: 700, margin: "0 0 16px", color: "#0A1220" }}>A campus marketplace, done right</h2>
@@ -364,7 +385,7 @@ export default function LandingPage() {
                 { label: "Your school only", pos: { bottom: "14%", left: "10%" }, icon: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M3 11l5-5 5 5"/><path d="M3 14h10"/></svg> },
                 { label: "Trust badge", pos: { bottom: "16%", right: "8%" }, icon: <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="2"><path d="M8 1.5l5.5 2.5v3.5c0 3.5-2.4 6.5-5.5 7-3.1-.5-5.5-3.5-5.5-7V4z"/></svg> },
               ].map((o) => (
-                <div key={o.label} style={{ position: "absolute", background: "#FFFFFF", borderRadius: 14, padding: "12px 14px", boxShadow: "0 8px 24px -10px rgba(10,18,32,0.10), 0 2px 6px rgba(10,18,32,0.04)", display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, letterSpacing: "-0.01em", ...o.pos }}>
+                <div key={o.label} className="lp-orbit-chip" style={{ position: "absolute", background: "#FFFFFF", borderRadius: 14, padding: "12px 14px", boxShadow: "0 8px 24px -10px rgba(10,18,32,0.10), 0 2px 6px rgba(10,18,32,0.04)", display: "flex", alignItems: "center", gap: 10, fontSize: 13, fontWeight: 600, letterSpacing: "-0.01em", ...o.pos }}>
                   <div style={{ width: 28, height: 28, borderRadius: 8, background: "#E5EEF6", color: "#00599B", display: "grid", placeItems: "center" }}>{o.icon}</div>
                   {o.label}
                 </div>
@@ -431,9 +452,9 @@ export default function LandingPage() {
                 </div>
                 <div style={{ flex: 1, padding: "22px 18px", display: "flex", flexDirection: "column", gap: 10, overflow: "hidden" }}>
                   <div style={{ textAlign: "center", fontSize: 11, color: "#8893A2", marginBottom: 6 }}>Today</div>
-                  <div style={{ alignSelf: "flex-start", background: "#E5EEF6", color: "#0A1220", padding: "10px 14px", borderRadius: 14, borderBottomLeftRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "70%" }}>Hey! Is the mini-fridge still available?</div>
-                  <div style={{ alignSelf: "flex-end", background: "#00599B", color: "#FFFFFF", padding: "10px 14px", borderRadius: 14, borderBottomRightRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "70%" }}>Yep — pickup near Olin around 4?</div>
-                  <div style={{ alignSelf: "flex-start", background: "#E5EEF6", color: "#0A1220", padding: "10px 14px", borderRadius: 14, borderBottomLeftRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "70%" }}>Perfect. Cash okay?</div>
+                  <div className="lp-chat-bubble-them" style={{ alignSelf: "flex-start", background: "#E5EEF6", color: "#0A1220", padding: "10px 14px", borderRadius: 14, borderBottomLeftRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "70%" }}>Hey! Is the mini-fridge still available?</div>
+                  <div className="lp-chat-bubble-me" style={{ alignSelf: "flex-end", background: "#00599B", color: "#FFFFFF", padding: "10px 14px", borderRadius: 14, borderBottomRightRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "70%" }}>Yep — pickup near Olin around 4?</div>
+                  <div className="lp-chat-bubble-them" style={{ alignSelf: "flex-start", background: "#E5EEF6", color: "#0A1220", padding: "10px 14px", borderRadius: 14, borderBottomLeftRadius: 4, fontSize: 13, lineHeight: 1.4, maxWidth: "70%" }}>Perfect. Cash okay?</div>
                   <div className="lp-typing" style={{ alignSelf: "flex-start", display: "inline-flex", gap: 3, padding: "10px 14px", background: "#E5EEF6", borderRadius: 14, borderBottomLeftRadius: 4 }}>
                     <span/><span/><span/>
                   </div>
@@ -445,8 +466,8 @@ export default function LandingPage() {
       </section>
 
       {/* ── 4. Trust ── */}
-      <section style={{ padding: "120px 0", background: "#FFFFFF" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
+      <section className="lp-section" style={{ padding: "120px 0", background: "#FFFFFF" }}>
+        <div className="lp-container" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
           <div className="lp-trust-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 88, alignItems: "center" }}>
             <div>
               <span style={{ display: "inline-block", fontSize: 13, fontWeight: 600, color: "#00599B", marginBottom: 12 }}>Built for trust</span>
@@ -492,8 +513,8 @@ export default function LandingPage() {
       </section>
 
       {/* ── 5. Outcomes ── */}
-      <section style={{ padding: "120px 0", background: "#F9FAFB" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
+      <section className="lp-section" style={{ padding: "120px 0", background: "#F9FAFB" }}>
+        <div className="lp-container" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
           <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 72px" }}>
             <span style={{ display: "inline-block", fontSize: 13, fontWeight: 600, color: "#00599B", marginBottom: 12 }}>The bottom line</span>
             <h2 style={{ fontSize: "clamp(34px, 4.5vw, 52px)", lineHeight: 1.05, letterSpacing: "-0.035em", fontWeight: 700, margin: "0 0 16px", color: "#0A1220" }}>Why students switch to DormSy</h2>
@@ -528,8 +549,8 @@ export default function LandingPage() {
       </section>
 
       {/* ── 6. Availability ── */}
-      <section style={{ padding: "96px 0" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
+      <section className="lp-section" style={{ padding: "96px 0" }}>
+        <div className="lp-container" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
           <div style={{ textAlign: "center", maxWidth: 720, margin: "0 auto 72px" }}>
             <span style={{ display: "inline-block", fontSize: 13, fontWeight: 600, color: "#00599B", marginBottom: 12 }}>Availability</span>
             <h2 style={{ fontSize: "clamp(34px, 4.5vw, 52px)", lineHeight: 1.05, letterSpacing: "-0.035em", fontWeight: 700, margin: "0 0 16px", color: "#0A1220" }}>Where DormSy is live</h2>
@@ -568,9 +589,9 @@ export default function LandingPage() {
       </section>
 
       {/* ── 7. Waitlist ── */}
-      <section id="waitlist" style={{ padding: "96px 0", background: "#F9FAFB" }}>
-        <div style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
-          <div style={{ maxWidth: 720, margin: "0 auto", textAlign: "center", background: "#FFFFFF", border: "1px solid #E6E9EE", borderRadius: 20, padding: "64px 48px", boxShadow: "0 1px 2px rgba(10,18,32,0.04)" }}>
+      <section id="waitlist" className="lp-section" style={{ padding: "96px 0", background: "#F9FAFB" }}>
+        <div className="lp-container" style={{ maxWidth: 1200, margin: "0 auto", padding: "0 28px" }}>
+          <div className="lp-waitlist-box" style={{ maxWidth: 720, margin: "0 auto", textAlign: "center", background: "#FFFFFF", border: "1px solid #E6E9EE", borderRadius: 20, padding: "64px 48px", boxShadow: "0 1px 2px rgba(10,18,32,0.04)" }}>
             <span style={{ display: "inline-block", fontSize: 13, fontWeight: 600, color: "#00599B", marginBottom: 8 }}>Waitlist</span>
             <h2 style={{ fontSize: "clamp(28px, 3.5vw, 44px)", lineHeight: 1.08, letterSpacing: "-0.035em", fontWeight: 700, margin: "8px 0 0", color: "#0A1220" }}>Not at your college yet.</h2>
             <p style={{ fontSize: 18, color: "#5A6473", maxWidth: 480, margin: "12px auto 0", lineHeight: 1.55 }}>
