@@ -36,7 +36,11 @@ export async function convertIfHeic(file: File): Promise<File> {
     ctx.drawImage(img, 0, 0);
 
     const blob = await new Promise<Blob>((resolve, reject) =>
-      canvas.toBlob((b) => (b ? resolve(b) : reject(new Error("toBlob failed"))), "image/jpeg", 0.85)
+      canvas.toBlob(
+        (b) => (b ? resolve(b) : reject(new Error("toBlob failed"))),
+        "image/jpeg",
+        0.85,
+      ),
     );
     return new File([blob], newName, { type: "image/jpeg" });
   } catch {
@@ -46,7 +50,11 @@ export async function convertIfHeic(file: File): Promise<File> {
   // Strategy 2: heic2any (WASM) — works on Chrome/Firefox
   try {
     const heic2any = (await import("heic2any")).default;
-    const converted = await heic2any({ blob: file, toType: "image/jpeg", quality: 0.85 });
+    const converted = await heic2any({
+      blob: file,
+      toType: "image/jpeg",
+      quality: 0.85,
+    });
     const blob = Array.isArray(converted) ? converted[0] : converted;
     return new File([blob], newName, { type: "image/jpeg" });
   } catch {
