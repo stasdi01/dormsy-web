@@ -314,35 +314,36 @@ export default function LandingPage() {
             shipping, no fees.
           </p>
 
-          <div
-            className="lp-hero-cta"
-            style={{
-              display: "inline-flex",
-              gap: 12,
-              flexWrap: "wrap",
-              justifyContent: "center",
-            }}
-          >
-            <Link href="/sign-up" className="lp-btn lp-btn-primary lp-btn-lg">
-              Sign up with your college email
-              <svg
-                className="lp-arrow"
-                width="14"
-                height="14"
-                viewBox="0 0 16 16"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M3 8h10M9 4l4 4-4 4" />
-              </svg>
-            </Link>
-            <Link href="/login" className="lp-btn lp-btn-outline lp-btn-lg">
-              I already have an account
-            </Link>
-          </div>
+          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
+            <div
+              className="lp-hero-cta"
+              style={{
+                display: "flex",
+                gap: 12,
+                flexWrap: "wrap",
+                justifyContent: "center",
+              }}
+            >
+              <Link href="/sign-up" className="lp-btn lp-btn-primary lp-btn-lg">
+                Sign up with your college email
+                <svg
+                  className="lp-arrow"
+                  width="14"
+                  height="14"
+                  viewBox="0 0 16 16"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <path d="M3 8h10M9 4l4 4-4 4" />
+                </svg>
+              </Link>
+              <Link href="/login" className="lp-btn lp-btn-outline lp-btn-lg">
+                I already have an account
+              </Link>
+            </div>
 
           <div
             className="lp-hero-meta"
@@ -364,6 +365,7 @@ export default function LandingPage() {
             >
               Luther College
             </strong>
+          </div>
           </div>
         </div>
 
