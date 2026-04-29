@@ -51,7 +51,6 @@ export default function LandingPage() {
       }}
     >
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         * { box-sizing: border-box; }
         html, body { margin: 0; padding: 0; }
         a { color: inherit; text-decoration: none; }
@@ -504,7 +503,7 @@ export default function LandingPage() {
               height: "100%",
             }}
             viewBox="0 0 1440 560"
-            preserveAspectRatio="xMidYEnd meet"
+            preserveAspectRatio="xMidYMax meet"
             aria-hidden="true"
           >
             <defs>
@@ -2543,7 +2542,7 @@ export default function LandingPage() {
               height: "100%",
             }}
             viewBox="0 0 1440 340"
-            preserveAspectRatio="xMidYEnd meet"
+            preserveAspectRatio="xMidYMax meet"
             aria-hidden="true"
           >
             <defs>
