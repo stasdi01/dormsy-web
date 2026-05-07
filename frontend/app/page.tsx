@@ -2629,6 +2629,42 @@ export default function LandingPage() {
                 A campus-only marketplace for verified students. Buy, sell, and
                 meet on your own quad.
               </p>
+              <a
+                href="https://instagram.com/getdormsy"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginTop: 20,
+                  color: "rgba(255,255,255,0.65)",
+                  fontSize: 14,
+                  fontWeight: 500,
+                  textDecoration: "none",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "#FFFFFF")}
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.color = "rgba(255,255,255,0.65)")
+                }
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="1.75"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  aria-hidden="true"
+                >
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+                  <circle cx="12" cy="12" r="4" />
+                  <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none" />
+                </svg>
+                @getdormsy
+              </a>
             </div>
             <div>
               <h4
