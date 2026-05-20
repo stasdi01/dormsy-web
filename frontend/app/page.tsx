@@ -309,11 +309,18 @@ export default function LandingPage() {
             }}
           >
             DormSy is the verified, .edu-only marketplace where students buy and
-            sell with people they actually share a quad with — no strangers, no
+            sell with people they actually share a quad with. No strangers, no
             shipping, no fees.
           </p>
 
-          <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 0 }}>
+          <div
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: 0,
+            }}
+          >
             <div
               className="lp-hero-cta"
               style={{
@@ -344,27 +351,27 @@ export default function LandingPage() {
               </Link>
             </div>
 
-          <div
-            className="lp-hero-meta"
-            style={{
-              marginTop: 28,
-              marginLeft: "auto",
-              marginRight: "auto",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: 8,
-              color: "#5A6473",
-              fontSize: 14,
-            }}
-          >
-            <span className="lp-pulse" />
-            Currently live at{" "}
-            <strong
-              style={{ color: "#0A1220", fontWeight: 600, marginLeft: 2 }}
+            <div
+              className="lp-hero-meta"
+              style={{
+                marginTop: 28,
+                marginLeft: "auto",
+                marginRight: "auto",
+                display: "inline-flex",
+                alignItems: "center",
+                gap: 8,
+                color: "#5A6473",
+                fontSize: 14,
+              }}
             >
-              Luther College
-            </strong>
-          </div>
+              <span className="lp-pulse" />
+              Currently live at{" "}
+              <strong
+                style={{ color: "#0A1220", fontWeight: 600, marginLeft: 2 }}
+              >
+                Luther College
+              </strong>
+            </div>
           </div>
         </div>
 
@@ -896,7 +903,7 @@ export default function LandingPage() {
                 lineHeight: 1.55,
               }}
             >
-              From sign-up to handoff in three steps — built around the way
+              From sign-up to handoff in three steps. Built around the way
               college actually works.
             </p>
           </div>
@@ -946,7 +953,7 @@ export default function LandingPage() {
                 }}
               >
                 Sign up with your .edu email and DormSy ties your account to
-                your school. Every person you message, every listing you see —
+                your school. Every person you message, every listing you see is
                 verified by the same email your registrar sends grades to.
               </p>
               <p
@@ -1381,7 +1388,7 @@ export default function LandingPage() {
                 }}
               >
                 Selling is a couple of taps: a photo, a price, a category.
-                Buying is faster — search just the listings inside your school,
+                Buying is faster. Search just the listings inside your school,
                 filter by what you actually want, save what you&apos;re eyeing
                 for later.
               </p>
@@ -1444,7 +1451,7 @@ export default function LandingPage() {
                   maxWidth: 460,
                 }}
               >
-                Message buyers and sellers in-app under your handle — no phone
+                Message buyers and sellers in-app under your handle, no phone
                 numbers needed until you&apos;re ready. When you are, agree on a
                 campus spot, hand off in person, and you&apos;re done.
               </p>
@@ -1578,7 +1585,7 @@ export default function LandingPage() {
                       maxWidth: "80%",
                     }}
                   >
-                    Yep — pickup near Olin around 4?
+                    Yep, pickup near Olin around 4?
                   </div>
                   <div
                     className="lp-chat-bubble-them"
@@ -2661,7 +2668,13 @@ export default function LandingPage() {
                 >
                   <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
                   <circle cx="12" cy="12" r="4" />
-                  <circle cx="17.5" cy="6.5" r="0.75" fill="currentColor" stroke="none" />
+                  <circle
+                    cx="17.5"
+                    cy="6.5"
+                    r="0.75"
+                    fill="currentColor"
+                    stroke="none"
+                  />
                 </svg>
                 @getdormsy
               </a>
