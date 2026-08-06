@@ -1,4 +1,4 @@
-# DormSy — Campus Marketplace
+# DormSy: Campus Marketplace
 
 Campus-only web marketplace for college students. Built with Next.js + Express + Supabase.
 
