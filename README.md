@@ -1,126 +1,157 @@
-# DormSy: Campus Marketplace
+# DormSy
 
-Campus-only web marketplace for college students. Built with Next.js + Express + Supabase.
+**A campus-only marketplace where college students buy, sell, and give away dorm essentials — without leaving campus or trusting a stranger from Craigslist.**
 
-## Repository Structure
+<!-- FILL IN: replace with your real links. Delete any line you don't have. -->
+🔗 **[Live App](https://getdormsy.com)** · 🎥 **[2-min Demo](https://link-to-demo-video)**
 
-```
-dormsy/
-├── frontend/          # Next.js app (deployed to Vercel)
-├── backend/           # Express API server (deployed to Railway)
-└── README.md
-```
-
-## Prerequisites
-
-- Node.js 18+
-- A Supabase project (free tier works)
+<!-- FILL IN: add a screenshot or GIF here. This is the single highest-impact thing in this file. -->
+![DormSy listings page](docs/screenshot-listings.png)
 
 ---
 
-## 1. Database Setup
+## The problem
 
-1. Create a new project at [supabase.com](https://supabase.com)
-2. Go to **SQL Editor** and run the contents of `backend/src/migrations/001_schema.sql`
-3. Go to **Storage** → create a bucket named `dormsy` → set it to **Public**
+Every semester, students throw away furniture, mini-fridges, and textbooks while other students buy the same items new. The existing options don't work well for a small campus:
 
----
+- **Facebook Marketplace / Craigslist** — anyone can join, so you're meeting strangers off-campus to trade a $20 desk lamp.
+- **Campus Facebook groups** — no search, no categories, listings disappear into the feed within a day.
 
-## 2. Environment Variables
+DormSy restricts access to verified students at a single college. Everyone on the platform is someone you could meet in the library in ten minutes.
 
-### Frontend (`frontend/.env.local`)
-
-Copy `frontend/.env.local.example` → `frontend/.env.local` and fill in:
-
-| Variable | Description |
-|---|---|
-| `NEXT_PUBLIC_SUPABASE_URL` | Your Supabase project URL |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Your Supabase anon (public) key |
-| `NEXT_PUBLIC_API_URL` | Backend API URL (e.g. `http://localhost:4000`) |
-
-### Backend (`backend/.env`)
-
-Copy `backend/.env.example` → `backend/.env` and fill in:
-
-| Variable | Description |
-|---|---|
-| `SUPABASE_URL` | Your Supabase project URL |
-| `SUPABASE_SERVICE_ROLE_KEY` | Supabase service role key — **never expose to frontend** |
-| `PORT` | Port for Express server (default: `4000`) |
-| `FRONTEND_URL` | Frontend URL for CORS (e.g. `http://localhost:3000`) |
-| `JWT_SECRET` | Random secret string (32+ chars) |
+<!-- FILL IN: if you have any traction numbers, put them here. Even small ones are worth more than none. -->
+<!-- Example: Built and launched at Luther College. XX registered users, XX listings posted, partnerships with the Center for Sustainability and Student Senate. -->
 
 ---
 
-## 3. Running Locally
+## Features
 
-### Backend
+- **Verified campus-only signup** — registration is restricted to `@luther.edu` addresses with email confirmation, so every account belongs to a real student
+- **Listings with image upload** — multi-image posts backed by object storage, with categories and search
+- **Real-time messaging** — buyers and sellers coordinate in-app instead of exchanging phone numbers
+<!-- FILL IN: add or remove features to match what you actually built. Be specific — "saved listings and search filters" beats "user features". -->
 
-```bash
-cd backend
-cp .env.example .env
-# Fill in your .env values
-npm run dev
-# API running at http://localhost:4000
+---
+
+## Architecture
+
+```mermaid
+flowchart LR
+    U[Browser] --> F[Next.js 15<br/>App Router · Vercel]
+    F -->|authenticated requests| B[Express API<br/>Railway]
+    F -->|realtime subscribe| R[(Supabase Realtime)]
+    B --> D[(PostgreSQL<br/>Supabase)]
+    B --> S[(Supabase Storage)]
+    F -.->|login / signup| A[Supabase Auth]
 ```
 
-### Frontend
-
-```bash
-cd frontend
-cp .env.local.example .env.local
-# Fill in your .env.local values
-npm run dev
-# App running at http://localhost:3000
-```
+The client never talks to the database directly. All writes go through the Express API, which is the only component holding the Supabase service role key.
 
 ---
 
-## 4. Deployment
+## Technical decisions worth explaining
 
-### Frontend → Vercel
+<!-- FILL IN: These are the reasons I inferred from your setup. Edit each one so it matches
+     what you ACTUALLY did and why. This section is what engineers read most carefully —
+     it is the difference between "built a CRUD app" and "made real engineering choices".
+     Three to five items is the right number. -->
 
-1. Connect the `/frontend` folder of this repo to a Vercel project
-2. Set the environment variables in the Vercel dashboard
-3. Vercel auto-deploys on every push to `main`
+**Why a separate Express API instead of calling Supabase from the client**
+Supabase can be queried directly from the browser, which is faster to build. I chose a backend layer because the service role key must never reach the client, and because business rules — ownership checks on edit and delete, listing validation, rate limiting — belong on the server where they can't be bypassed. The frontend holds only the public anon key.
 
-### Backend → Railway
+**Enforcing campus-only access**
+Access control happens at signup rather than at query time: the API validates the email domain before an account is created, and Supabase Auth requires email confirmation before the account becomes usable. This means the "only students" guarantee is enforced once, at the boundary, instead of being re-checked in every endpoint.
 
-1. Connect the `/backend` folder to a Railway project
-2. Set the environment variables in the Railway dashboard
-3. Railway sets `PORT` automatically
+**Real-time messaging without building a socket server**
+Rather than running a WebSocket service, messages are stored in Postgres and clients subscribe to inserts through Supabase Realtime. This kept the deployment to two services instead of three, at the cost of tying message delivery to the database layer.
 
-### Database → Supabase Cloud
-
-Already configured when you ran the migration SQL. Supabase handles backups automatically.
-
----
-
-## 5. Supabase Auth Setup
-
-In your Supabase dashboard:
-
-1. Go to **Authentication → Email Templates**
-   - Update the "Confirm signup" template subject to: `Verify your DormSy account`
-   - Set the redirect URL to: `https://your-domain.com/auth/callback` (or `http://localhost:3000/auth/callback` locally)
-
-2. Go to **Authentication → URL Configuration**
-   - Add `http://localhost:3000/**` to **Redirect URLs** (for local dev)
-   - Add your production URL when deployed
-
-3. Go to **Authentication → Providers**
-   - Ensure **Email** is enabled
+**Image handling**
+Listing photos are uploaded to Supabase Storage and referenced by URL in the database, keeping large binary data out of Postgres.
 
 ---
 
-## 6. Tech Stack
+## Tech stack
 
 | Layer | Technology |
 |---|---|
-| Frontend | Next.js 15 (App Router) + Tailwind CSS v4 |
-| Backend | Node.js + Express |
-| Database | PostgreSQL via Supabase |
-| Auth | Supabase Auth |
+| Frontend | Next.js 15 (App Router), Tailwind CSS v4 |
+| Backend | Node.js, Express |
+| Database | PostgreSQL (Supabase) |
+| Auth | Supabase Auth (email + confirmation) |
 | Storage | Supabase Storage |
 | Real-time | Supabase Realtime |
-| Deployment | Vercel (frontend) + Railway (backend) |
+| Hosting | Vercel (frontend), Railway (backend) |
+
+---
+
+## Status
+
+<!-- FILL IN: be honest here. "Live with early users" and "feature-complete prototype"
+     are both fine answers. Recruiters respect a clear status more than a vague one. -->
+Live and in use at Luther College. Currently focused on growing listing density through direct outreach to campus organizations.
+
+**Next up:** <!-- FILL IN: 2–3 planned items, e.g. saved searches, seller ratings, mobile layout pass -->
+
+---
+
+<details>
+<summary><strong>Running locally</strong></summary>
+
+### Prerequisites
+- Node.js 18+
+- A Supabase project (free tier is enough)
+
+### 1. Database
+1. Create a project at [supabase.com](https://supabase.com)
+2. In **SQL Editor**, run `backend/src/migrations/001_schema.sql`
+3. In **Storage**, create a public bucket named `dormsy`
+
+### 2. Auth configuration
+In the Supabase dashboard:
+- **Authentication → Email Templates**: set the "Confirm signup" subject to `Verify your DormSy account` and the redirect to `http://localhost:3000/auth/callback`
+- **Authentication → URL Configuration**: add `http://localhost:3000/**` to Redirect URLs
+- **Authentication → Providers**: enable Email
+
+### 3. Environment variables
+
+**Frontend** (`frontend/.env.local`) — copy from `.env.local.example`
+
+| Variable | Description |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Supabase anon (public) key |
+| `NEXT_PUBLIC_API_URL` | Backend URL, e.g. `http://localhost:4000` |
+
+**Backend** (`backend/.env`) — copy from `.env.example`
+
+| Variable | Description |
+|---|---|
+| `SUPABASE_URL` | Supabase project URL |
+| `SUPABASE_SERVICE_ROLE_KEY` | Service role key — server-side only, never expose |
+| `PORT` | Express port (default `4000`) |
+| `FRONTEND_URL` | Frontend origin for CORS |
+| `JWT_SECRET` | Random string, 32+ characters |
+
+### 4. Run
+
+```bash
+# Backend
+cd backend && cp .env.example .env && npm run dev   # http://localhost:4000
+
+# Frontend
+cd frontend && cp .env.local.example .env.local && npm run dev   # http://localhost:3000
+```
+
+### Repository structure
+```
+dormsy/
+├── frontend/   # Next.js app → Vercel
+├── backend/    # Express API → Railway
+└── README.md
+```
+
+### Deployment
+- **Frontend:** connect `/frontend` to a Vercel project, set env vars in the dashboard, auto-deploys on push to `main`
+- **Backend:** connect `/backend` to a Railway project, set env vars in the dashboard (Railway sets `PORT` automatically)
+
+</details>
