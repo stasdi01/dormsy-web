@@ -3,7 +3,7 @@
 **A campus-only marketplace where college students buy, sell, and give away dorm essentials, without leaving campus or trusting a stranger.**
 
 <!-- FILL IN: replace with your real links. Delete any line you don't have. -->
-🔗 **[Live App](https://getdormsy.com)** · 🎥 **[2-min Demo](https://link-to-demo-video)**
+🔗 **[Live App](https://getdormsy.com)**
 
 <!-- FILL IN: add a screenshot or GIF here. This is the single highest-impact thing in this file. -->
 ![DormSy listings page](/Users/dimitrijestasic/Documents/dormsy-docs/dormsy_homefeed)
