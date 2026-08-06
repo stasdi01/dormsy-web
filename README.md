@@ -1,6 +1,6 @@
 # DormSy
 
-**A campus-only marketplace where college students buy, sell, and give away dorm essentials — without leaving campus or trusting a stranger from Craigslist.**
+**A campus-only marketplace where college students buy, sell, and give away dorm essentials, without leaving campus or trusting a stranger.**
 
 <!-- FILL IN: replace with your real links. Delete any line you don't have. -->
 🔗 **[Live App](https://getdormsy.com)** · 🎥 **[2-min Demo](https://link-to-demo-video)**
