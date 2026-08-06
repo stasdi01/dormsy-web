@@ -6,7 +6,7 @@
 🔗 **[Live App](https://getdormsy.com)** · 🎥 **[2-min Demo](https://link-to-demo-video)**
 
 <!-- FILL IN: add a screenshot or GIF here. This is the single highest-impact thing in this file. -->
-![DormSy listings page](docs/screenshot-listings.png)
+![DormSy listings page](/Users/dimitrijestasic/Documents/dormsy-docs/dormsy_homefeed)
 
 ---
 
