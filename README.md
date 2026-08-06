@@ -6,7 +6,7 @@
 🔗 **[Live App](https://getdormsy.com)**
 
 <!-- FILL IN: add a screenshot or GIF here. This is the single highest-impact thing in this file. -->
-![DormSy listings page](/Users/dimitrijestasic/Documents/dormsy-docs/dormsy_homefeed)
+![DormSy listings page]<img width="1512" height="982" alt="dormsy_homefeed" src="https://github.com/user-attachments/assets/aaea5442-3bc5-4475-975d-2f968171bd8d" />
 
 ---
 
