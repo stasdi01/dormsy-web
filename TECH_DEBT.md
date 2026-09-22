@@ -14,7 +14,7 @@ Minimum to have a credible live demo and to not lose signups from people you pit
 - [ ] **Fix the landing-page waitlist** (P0 #1 below). You are about to send people to the homepage and every waitlist signup is currently being thrown away.
 - [ ] **Re-enable email verification in Supabase.** It was turned off for local dev. If anyone signs up at the conference with it off, accounts get created unverified.
 - [ ] **Verify the sending domain with Resend** so mail comes from `noreply@getdormsy.com` (already the configured `EMAIL_FROM`) and not `onboarding@resend.dev`. Unverified domain = the send silently fails or lands in spam.
-- [ ] **Hide seller phone/Instagram on the public listing route** (P0 #7 below). One-line fix, and it is the kind of thing that gets noticed when you demo a listing page on a projector.
+- [ ] **Hide seller phone/Instagram on the public listing route** (P0 #5 below). One-line fix, and it is the kind of thing that gets noticed when you demo a listing page on a projector.
 - [ ] **Add the conference colleges to `COMING_SOON_COLLEGES`** in `frontend/app/page.tsx:7` so schools you are pitching see their own name on the landing page.
 
 Already done, no action needed: PWA icons (`icon-192.png` / `icon-512.png` exist and are real 192/512 PNGs).
@@ -30,34 +30,45 @@ Already done, no action needed: PWA icons (`icon-192.png` / `icon-512.png` exist
 
 **Fix:** point it at `/colleges/waitlist`, send `college_name` (parse from the email domain if there's no field), and only show success on a 2xx.
 
-### 2. Listings never actually expire
+### 2. Login hangs forever with no error when the backend is unreachable
+`frontend/app/(auth)/login/page.tsx` — `handleSubmit` has no `try`/`catch` around the `fetch` to `${apiUrl}/auth/me` (lines 57–67). Supabase sign-in succeeds and sets the session cookie, then that fetch runs. If it *rejects* rather than returning a non-ok response — Railway down, DNS gone, CORS blocked — the rejection escapes the handler, `setLoading(false)` never runs, and no error is ever set.
+
+Symptom: the Log in button spins forever and the user concludes login is broken. In reality they are already authenticated — navigating manually to `/feed` works.
+
+This makes every backend/CORS/deploy problem look identical to an auth problem, which is exactly the wrong signal when debugging. Note `res.ok` is checked but a thrown fetch is not, so this only triggers on network-level failures, not HTTP errors.
+
+**Fix:** wrap the block in try/catch, `setLoading(false)` in a `finally`, and surface a distinct message ("Couldn't reach the server — try again"). The same unguarded-fetch pattern is worth auditing across the other pages.
+
+**Diagnostic use:** when login appears stuck, manually visit `/feed`. Logged in → Supabase auth is fine and the backend is the problem. Bounced to `/login` → Supabase auth itself failed.
+
+### 3. Listings never actually expire
 Nothing flips `status` when `expires_at` passes, and the feed query (`backend/src/routes/listings.js:41-46`) filters on `status = 'active'` only — there is no `expires_at > now()` condition anywhere. The 30-day expiry is currently cosmetic: a "Nd left" label in my-listings plus one warning email.
 
 **Fix:** both halves — add `.gt("expires_at", new Date().toISOString())` to the feed query, and add a daily cron that sets `status = 'archived'` on active listings past `expires_at`. Also: the cron warns at 3 days left (`backend/src/lib/cron.js:16`), but the product rule is a day-25 warning = 5 days left.
 
-### 3. Message receiver is never validated
+### 4. Message receiver is never validated
 `backend/src/routes/messages.js:104` takes `receiver_id` straight from the request body. The route checks that the *listing's* college matches the sender's, but never that the receiver is the listing owner or an existing participant in that thread. Any authenticated user can inject a message into any conversation by choosing an arbitrary `listing_id` / `receiver_id` pair.
 
 **Fix:** require `receiver_id` to be either the listing's `user_id`, or a user who already has a message in that `listing_id` thread with the sender.
 
-### 4. Seller phone and Instagram are exposed publicly
+### 5. Seller phone and Instagram are exposed publicly
 `GET /listings/:slug` intentionally has no `requireAuth` (shareable links), but the select at `backend/src/routes/listings.js:108` includes `phone, instagram`. Anyone with a URL — no account, any school, a scraper — gets the seller's phone number.
 
 **Fix:** drop `phone, instagram` from that select. Serve them only from the authenticated `GET /users/:username` route, which already enforces the college boundary.
 
-### 5. Account deletion fails silently and orphans the auth user
+### 6. Account deletion fails silently and orphans the auth user
 `DELETE /users/me` soft-deletes the user's listings, then hard-deletes the `users` row. That cascades to `listings` (`ON DELETE CASCADE`), which hits `messages.listing_id ... ON DELETE RESTRICT` — so the delete errors out whenever anyone has ever messaged them. The code ignores the error, deletes the Supabase Auth user anyway, and returns `"Account deleted"`.
 
 Result: an auth user with no profile row. They can still log in, and then every request 401s with "User profile not found."
 
 **Fix:** decide the real semantics — either anonymize (keep the row, blank the PII, mark `deleted_at`) or cascade messages properly. Check the error before deleting the auth user either way.
 
-### 6. Deleting a conversation deletes it for both people
+### 7. Deleting a conversation deletes it for both people
 `backend/src/routes/messages.js:184` — the comment says "for the authenticated user," but it's a hard `DELETE` on the rows. The other person's copy of the thread vanishes with no notice and no recovery.
 
 **Fix:** soft-delete per side (`deleted_by_sender` / `deleted_by_receiver` flags) and filter in the conversation list.
 
-### 7. Migration file is out of sync with production
+### 8. Migration file is out of sync with production
 `backend/src/migrations/001_schema.sql` is missing `listings.is_negotiable` and the entire `feedback` table, both of which the running code requires. A fresh Supabase project built from that file breaks listing creation and feedback immediately. Those changes were applied by hand in the SQL editor and never written down.
 
 **Fix:** dump the live schema, reconcile it into numbered migration files. Do this *before* the DB migration below — it is the source of truth you will be migrating from.
@@ -105,7 +116,7 @@ Recommended target stack:
 
 Phases, each independently shippable and reversible:
 
-1. **Reconcile the schema** (P0 #7 above) — you cannot migrate from a schema file that doesn't match production.
+1. **Reconcile the schema** (P0 #8 above) — you cannot migrate from a schema file that doesn't match production.
 2. **Database.** `pg_dump` the app tables into Neon/Railway, rewrite the ~60% of the backend that is `supabase-js` query-builder code. PostgREST's embedded selects (`seller:users!user_id(...)`) become joins or Drizzle relational queries — that's the fiddly part, since the nested response shape is what the frontend types expect. Supabase Auth and Storage stay untouched. **3–5 days.**
 3. **Storage.** Two upload endpoints to rewrite, plus a script to copy every object to R2 and rewrite the stored URLs in `listing_photos.storage_url` and `users.avatar_url`. **1–2 days.**
 4. **Realtime.** Replace the `postgres_changes` subscription in the chat page with SSE. Only one feature depends on it. **1 day.**
