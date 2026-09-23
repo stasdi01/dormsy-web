@@ -20,7 +20,14 @@ Minimum to have a credible live demo and to not lose signups from people you pit
 - [ ] **Hide seller phone/Instagram on the public listing route** (P0 #5 below). One-line fix, and it is the kind of thing that gets noticed when you demo a listing page on a projector.
 - [ ] **Add the conference colleges to `COMING_SOON_COLLEGES`** in `frontend/app/page.tsx:7` so schools you are pitching see their own name on the landing page.
 
+- [ ] **Seed demo listings before presenting.** Live DB as of 2026-09-22 holds only **3 listings** (and 2 messages) against 27 users. A 3-item feed reads as abandoned when pitching other campuses. Seed 15–20 realistic listings with photos.
+- [ ] **Pay/restore the Railway plan.** Confirmed 2026-09-22: the service is paused for non-payment, not deleted. Hobby plan restores it; do not attempt an infra migration this week.
+
+> ⚠️ **Do NOT fix P0 #3 (listing expiry) before the conference.** All 3 existing listings were created around April 2026 and passed `expires_at` around May. They appear in the feed *only because* expiry is unenforced. Adding the `expires_at > now()` filter empties the demo feed completely. Fix it after the conference, or seed fresh listings in the same change.
+
 Already done, no action needed: PWA icons (`icon-192.png` / `icon-512.png` exist and are real 192/512 PNGs).
+
+**Verified live 2026-09-22 (post-restore):** data fully intact — colleges 1, users 27, listings 3, listing_photos 7, messages 2, saved_listings 0, waitlist 1, auth.users 28 (all 28 email-confirmed), storage objects 67. `feedback` table and `listings.is_negotiable` both **exist in the live DB** — so P0 #8 is a stale *migration file*, not a broken database. Two anomalies surfaced: 28 auth users vs 27 profile rows (one orphan — logs in, then 401s on every request, consistent with P0 #6), and 67 storage objects against 7 listing photos + ~27 avatars, confirming the orphaned-file P1 item. All users being confirmed indicates email verification is still switched off.
 
 ---
 
